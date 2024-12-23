@@ -17,7 +17,7 @@ const user = computed(() => page.props.auth.user)
                 <v-list>
                     <v-list-item
                         prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-                        :subtitle="user.name"
+                        :subtitle="user.email"
                         :title="user.name"
                     ></v-list-item>
                 </v-list>
