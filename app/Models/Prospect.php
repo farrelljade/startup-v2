@@ -21,4 +21,14 @@ class Prospect extends Model
         'postal_code',
         'lead_source_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function leadSource()
+    {
+        return $this->belongsTo(LeadSource::class);
+    }
 }

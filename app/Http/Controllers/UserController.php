@@ -16,4 +16,13 @@ class UserController extends Controller
 
         return Inertia::render('Admin/UsersPage', $data);
     }
+
+    public function show(User $user)
+    {
+        $data = [];
+
+        $data['user'] = $user;
+
+        return Inertia::render('Admin/UserProfile', $data);
+    }
 }

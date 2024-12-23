@@ -22,7 +22,7 @@ class ProspectFactory extends Factory
             'user_id' => User::inRandomOrder()->first()->id,
             'company_name' => fake()->company(),
             'email' => fake()->email(),
-            'phone' => fake()->phoneNumber('gb'),
+            'phone' => fake()->phoneNumber('gb_GB'),
             'line_1' => fake()->streetAddress(),
             'line_2' => fake()->optional()->streetAddress(),
             'city' => fake()->city(),
