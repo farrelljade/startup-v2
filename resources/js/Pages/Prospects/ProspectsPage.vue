@@ -37,7 +37,7 @@ const prospectsHeaders = [
                                 variant="text"
                                 icon="mdi-location-enter"
                                 color="warning"
-                                @click="router.visit(route('prospects.show', item.id ))"
+                                @click="router.visit(route('prospect.enquiry', item.id ))"
                             />
                         </template>
                     </v-data-table>

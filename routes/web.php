@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProspectController;
+use App\Http\Controllers\ProspectEnquiryController;
+use App\Http\Controllers\ProspectNotesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
     Route::get('/prospects', [ProspectController::class, 'index'])->name('prospects.index');
-    Route::get('/prospects/{prospect}', [ProspectController::class, 'show'])->name('prospects.show');
+    Route::get('/prospects/{prospect}', [ProspectEnquiryController::class, 'index'])->name('prospect.enquiry');
+    Route::get('/prospects/{prospect}/notes', [ProspectNotesController::class, 'index'])->name('prospect.notes');
 });
 
 require __DIR__.'/auth.php';

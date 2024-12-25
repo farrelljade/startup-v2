@@ -18,13 +18,4 @@ class ProspectController extends Controller
 
         return Inertia::render('Prospects/ProspectsPage', $data);
     }
-
-    public function show(Prospect $prospect)
-    {
-        $data = [];
-
-        $data['prospect'] = $prospect;
-
-        return Inertia::render('Prospects/ProspectProfile', $data);
-    }
 }

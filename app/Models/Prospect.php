@@ -31,4 +31,9 @@ class Prospect extends Model
     {
         return $this->belongsTo(LeadSource::class);
     }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
 }
