@@ -68,11 +68,11 @@ const prospect_notes = 'prospect_notes';
                         elevation="2"
 
                     >
-<!--                        <template v-slot:opposite>-->
-<!--                            &lt;!&ndash; note created date &ndash;&gt;-->
-<!--                        </template>-->
-                        <v-card elevation="2" class="pa-2 bg-info">
-                            <v-card-text>
+                        <v-card elevation="2" class="pa-2">
+                            <v-card-title class="bg-info">
+                                {{ note.user.name }} @ {{ new Date(note.created_at).toLocaleString('gb') }}
+                            </v-card-title>
+                            <v-card-text elevation="2" class="pa-2">
                                 {{ note.note }}
                             </v-card-text>
                         </v-card>
