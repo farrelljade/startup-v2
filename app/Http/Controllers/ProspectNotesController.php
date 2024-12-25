@@ -9,14 +9,32 @@ use Inertia\Inertia;
 
 class ProspectNotesController extends Controller
 {
-    public function index(Prospect $prospect)
+    public function index(Request $request)
     {
         $data = [];
 
-        $prospect->load(['user', 'notes'])->toArray();
-
-        $data['prospect'] = $prospect;
+        $data['prospect'] = Prospect::query()
+            ->where('id', $request['prospect'])
+            ->with(['user', 'notes' => function($query) {
+                $query->orderBy('created_at', 'desc');
+            }])
+            ->first();
 
         return Inertia::render('Prospects/ProspectNotes', $data);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'note' => ['required', 'string'],
+        ]);
+
+        Note::create([
+            'prospect_id' => $request->prospect_id,
+            'user_id' => auth()->id(),
+            'note' => $request->note,
+        ]);
+
+        return redirect()->route('prospect.notes', ['prospect' => $request->prospect_id]);
     }
 }

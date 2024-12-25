@@ -20,7 +20,7 @@ function goToTab(routeName) {
     <v-card class="mb-2">
     <v-tabs
         :model-value="selected_tab"
-        bg-color="blue-grey-darken-2"
+        bg-color="transparent"
     >
         <v-tab value="prospect_enquiry" @click="goToTab('prospect.enquiry')">Profile</v-tab>
         <v-tab value="prospect_notes" @click="goToTab('prospect.notes')">Notes</v-tab>

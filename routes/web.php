@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/prospects', [ProspectController::class, 'index'])->name('prospects.index');
     Route::get('/prospects/{prospect}', [ProspectEnquiryController::class, 'index'])->name('prospect.enquiry');
     Route::get('/prospects/{prospect}/notes', [ProspectNotesController::class, 'index'])->name('prospect.notes');
+    Route::post('/prospects/{prospect}/notes', [ProspectNotesController::class, 'store'])->name('notes.store');
 });
 
 require __DIR__.'/auth.php';

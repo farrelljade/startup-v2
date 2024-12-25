@@ -21,7 +21,7 @@ const prospectsHeaders = [
 
         <v-container fluid>
             <v-card class="mb-3 pa-3">
-                <v-card-title class="bg-success d-flex justify-space-between align-center">
+                <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
                     Prospects Page
                 </v-card-title>
             </v-card>
