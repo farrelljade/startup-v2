@@ -15,9 +15,9 @@ class ProspectNotesController extends Controller
 
         $data['prospect'] = Prospect::query()
             ->where('id', $request['prospect'])
-            ->with(['user', 'notes.user' => function($query) {
+            ->with(['user', 'notes' => function($query) {
                 $query->orderBy('created_at', 'desc');
-            }])
+            }, 'notes.user'])
             ->first();
 
         return Inertia::render('Prospects/ProspectNotes', $data);

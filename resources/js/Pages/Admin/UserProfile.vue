@@ -11,38 +11,31 @@ const tab = ref('one');
     <AuthenticatedLayout>
         <Head title="Profile" />
         <v-container fluid>
-            <v-card>
-                <v-card class="mb-3 pa-2">
-                    <v-card-title class="bg-success d-flex justify-space-between align-center">
-                        User Profile
-                    </v-card-title>
-                </v-card>
-
-                <v-tabs
-                    v-model="tab"
-                    bg-color="primary"
-                >
-                    <v-tab value="one">Item One</v-tab>
-                    <v-tab value="two">Item Two</v-tab>
-                    <v-tab value="three">Item Three</v-tab>
-                </v-tabs>
-
-                <v-card-text>
-                    <v-tabs-window v-model="tab">
-                        <v-tabs-window-item value="one">
-                            One
-                        </v-tabs-window-item>
-
-                        <v-tabs-window-item value="two">
-                            Two
-                        </v-tabs-window-item>
-
-                        <v-tabs-window-item value="three">
-                            Three
-                        </v-tabs-window-item>
-                    </v-tabs-window>
-                </v-card-text>
+            <v-card class="mb-3 pa-2">
+                <v-card-title class="bg-success d-flex justify-space-between align-center">
+                    User Profile
+                </v-card-title>
             </v-card>
+
+            <v-row>
+                <v-col cols="12" md="6">
+                    <v-card>
+                        <v-card-title>First Card</v-card-title>
+                        <v-card-text>
+                            Content for first card
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+
+                <v-col cols="12" md="6">
+                    <v-card>
+                        <v-card-title>Second Card</v-card-title>
+                        <v-card-text>
+                            Content for second card
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
         </v-container>
     </AuthenticatedLayout>
 </template>

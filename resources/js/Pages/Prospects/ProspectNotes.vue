@@ -48,23 +48,13 @@ const prospect_notes = 'prospect_notes';
 
             <ProspectTabs :prospect="prospect" :selected_tab="prospect_notes"/>
 
-            <v-card class="mb-3 pa-2">
-                <v-row>
-                    <v-col cols="12" md="3">
-                        <v-autocomplete
-                            label="Search Notes"
-                            variant="underlined"
-                        />
-                    </v-col>
-                </v-row>
-            </v-card>
-
             <v-card>
                 <v-timeline>
                     <v-timeline-item
                         v-for="note in prospect.notes"
                         :key="note.id"
                         dot-color="info"
+                        icon="mdi-note-text"
                         elevation="2"
 
                     >

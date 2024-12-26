@@ -18,4 +18,15 @@ class ProspectEnquiryController extends Controller
 
         return Inertia::render('Prospects/ProspectProfile', $data);
     }
+
+    public function update(Request $request, Prospect $prospect)
+    {
+        $validated = $request->validate([
+            'phone' => ['nullable', 'string'],
+        ]);
+
+        $prospect->update($validated);
+
+        return back();
+    }
 }
