@@ -3,8 +3,12 @@ import {computed, ref} from 'vue';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head, usePage} from '@inertiajs/vue3';
 
-const tab = ref('one');
-
+const props = defineProps({
+    user: {
+        type: Object,
+        required: true
+    }
+})
 </script>
 
 <template>
@@ -20,16 +24,33 @@ const tab = ref('one');
             <v-row>
                 <v-col cols="12" md="6">
                     <v-card>
-                        <v-card-title>First Card</v-card-title>
+                        <v-card-title class="bg-success d-flex justify-space-between align-center">
+                            First Card
+                        </v-card-title>
                         <v-card-text>
-                            Content for first card
+                            <v-row>
+                                <v-col md="6">
+                                    <v-text-field
+                                        v-model="user.name"
+                                        label="Name"
+                                        readonly
+                                    />
+                                </v-col>
+                                <v-col md="6">
+                                    <v-text-field
+                                        v-model="user.email"
+                                        label="Email"
+                                        readonly
+                                    />
+                                </v-col>
+                            </v-row>
                         </v-card-text>
                     </v-card>
                 </v-col>
 
                 <v-col cols="12" md="6">
                     <v-card>
-                        <v-card-title>Second Card</v-card-title>
+                        <v-card-title class="bg-success d-flex justify-space-between align-center">Permissions</v-card-title>
                         <v-card-text>
                             Content for second card
                         </v-card-text>

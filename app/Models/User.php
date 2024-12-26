@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function prospects()
+    {
+        return $this->hasMany(Prospect::class);
+    }
 }
