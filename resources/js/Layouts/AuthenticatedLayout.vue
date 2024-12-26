@@ -1,6 +1,7 @@
 <script setup>
 import { usePage, Link } from '@inertiajs/vue3';
 import {computed, ref} from 'vue';
+import {userHasPermission} from "@/helpers/helpers.js";
 
 const page = usePage()
 const user = computed(() => page.props.auth.user)
@@ -30,6 +31,7 @@ const user = computed(() => page.props.auth.user)
                     <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
 
                     <v-list-group
+                        v-if="userHasPermission(user, 'View Admin')"
                         value="Admin"
                     >
                         <template v-slot:activator="{ props}">

@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import ProspectTabs from "@/Pages/Prospects/Components/ProspectTabs.vue";
 import {reactive, ref} from "vue";
-import {updateProspect} from "@/helpers/notifications.js";
+import {updateProspect, userHasPermission} from "@/helpers/helpers.js";
 
 const props = defineProps({
     prospect: {
