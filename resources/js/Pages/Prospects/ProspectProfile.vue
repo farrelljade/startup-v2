@@ -22,7 +22,7 @@ const form = reactive({
 function handleUpdate() {
     updateProspect(props.prospect.id, form, () => {
         snackbar.value = true;
-        snackbarMessage.value = 'Updated Successfully!';
+        snackbarMessage.value = 'Updated successfully!';
     });
 }
 

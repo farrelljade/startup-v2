@@ -2,13 +2,38 @@
 import {computed, ref} from 'vue';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head, usePage} from '@inertiajs/vue3';
+import {updateUserPermissions} from "@/helpers/helpers.js";
 
 const props = defineProps({
     user: {
         type: Object,
         required: true
+    },
+    availablePermissions: {
+        type: Array,
+        required: true
     }
 })
+
+const snackbar = ref(false);
+const snackbarMessage = ref('');
+
+// Create a reactive object to track permissions
+const selectedPermissions = ref(
+    props.user.permissions?.map(p => p.name) || []
+);
+
+function handlePermissionChange(permissionName) {
+    updateUserPermissions(
+        props.user.id,
+        selectedPermissions.value,
+        () => {
+            snackbar.value = true;
+            snackbarMessage.value = 'Updated successfully!';
+        }
+    );
+}
+
 </script>
 
 <template>
@@ -52,8 +77,29 @@ const props = defineProps({
                     <v-card>
                         <v-card-title class="bg-success d-flex justify-space-between align-center">Permissions</v-card-title>
                         <v-card-text>
-                            Content for second card
+                            <v-row>
+                                <v-col cols="12" md="4" sm="4">
+                                    <v-checkbox
+                                        v-for="permission in availablePermissions"
+                                        :key="permission.id"
+                                        v-model="selectedPermissions"
+                                        :value="permission.name"
+                                        :label="permission.name"
+                                        @change="handlePermissionChange(permission.name)"
+                                        color="success"
+                                        hide-details
+                                    ></v-checkbox>
+                                </v-col>
+                            </v-row>
                         </v-card-text>
+
+                        <v-snackbar
+                            v-model="snackbar"
+                            :timeout="3000"
+                            color="success"
+                        >
+                            {{ snackbarMessage }}
+                        </v-snackbar>
                     </v-card>
                 </v-col>
             </v-row>

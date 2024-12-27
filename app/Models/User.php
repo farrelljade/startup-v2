@@ -13,6 +13,8 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    protected $with = ['permissions'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -50,5 +52,10 @@ class User extends Authenticatable
     public function prospects(): HasMany
     {
         return $this->hasMany(Prospect::class);
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
     }
 }

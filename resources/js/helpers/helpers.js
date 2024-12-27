@@ -9,6 +9,9 @@ export function updateProspect(prospectId, data, onSuccess) {
                 if (onSuccess) {
                     onSuccess();
                 }
+            },
+            onError: (errors) => {
+                console.error('Update failed:', errors);
             }
         }
     );
@@ -22,4 +25,21 @@ export function userHasPermission(user, permissionName) {
 
     // Check if user has the specific permission
     return user.permissions?.some(permission => permission.name === permissionName) || false;
+}
+
+export function updateUserPermissions(userId, permissions, onSuccess) {
+    return router.patch(
+        route('users.permissions.update', { user: userId }),
+        { permissions: permissions },
+        {
+            onSuccess: () => {
+                if (onSuccess) {
+                    onSuccess();
+                }
+            },
+            onError: (errors) => {
+                console.error('Update failed:', errors);
+            }
+        }
+    );
 }

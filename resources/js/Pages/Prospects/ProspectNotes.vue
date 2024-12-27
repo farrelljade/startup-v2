@@ -14,8 +14,6 @@ const props = defineProps({
     }
 })
 
-console.log(props.prospect);
-
 function closeDialog() {
     addNoteDialog.value = false;
 }
