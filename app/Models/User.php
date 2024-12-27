@@ -54,6 +54,11 @@ class User extends Authenticatable
         return $this->hasMany(Prospect::class);
     }
 
+    public function customers(): HasMany
+    {
+        return $this->hasMany(Customer::class);
+    }
+
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);

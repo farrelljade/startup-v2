@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProspectController;
 use App\Http\Controllers\ProspectEnquiryController;
@@ -32,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/prospects/{prospect}/notes', [ProspectNotesController::class, 'store'])->name('notes.store');
     Route::patch('/prospects/{prospect}', [ProspectEnquiryController::class, 'update'])->name('prospects.update');
     Route::patch('/users/{user}/permissions', [UserController::class, 'updatePermissions'])->name('users.permissions.update');
+    Route::post('/prospects/{prospect}/orders', [OrderController::class, 'store'])->name('orders.store');
 });
 
 require __DIR__.'/auth.php';
