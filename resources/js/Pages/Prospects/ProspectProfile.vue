@@ -1,9 +1,12 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import {Head, usePage} from '@inertiajs/vue3';
 import ProspectTabs from "@/Pages/Prospects/Components/ProspectTabs.vue";
-import {reactive, ref} from "vue";
+import {computed, reactive, ref} from "vue";
 import {updateProspect, userHasPermission} from "@/helpers/helpers.js";
+
+const page = usePage()
+const user = computed(() => page.props.auth.user)
 
 const props = defineProps({
     prospect: {
@@ -103,7 +106,8 @@ const selected_tab = 'prospect_enquiry';
                                         <v-text-field
                                             v-model="form.phone"
                                             label="Phone"
-                                            @blur="handleUpdate"
+                                            @change="handleUpdate"
+                                            :readonly="!userHasPermission(user, 'Update Prospect')"
                                         />
                                     </v-col>
                                 </v-row>

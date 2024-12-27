@@ -1,6 +1,11 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, router } from '@inertiajs/vue3';
+import {Head, Link, router, usePage} from '@inertiajs/vue3';
+import {userHasPermission} from "@/helpers/helpers.js";
+import {computed} from "vue";
+
+const page = usePage()
+const auth = computed(() => page.props.auth.user)
 
 defineProps({
     prospects: Object
@@ -32,6 +37,19 @@ const prospectsHeaders = [
                         :headers="prospectsHeaders"
                         :items="prospects"
                     >
+                        <template v-slot:item.user.name="{ item }">
+                            <template v-if="userHasPermission(auth, 'View User Dashboard')">
+                                <Link
+                                    :href="route('dashboard', { user: item.user.id })"
+                                    class="text-blue-500 hover:text-blue-700 text-decoration-none"
+                                >
+                                    {{ item.user.name }}
+                                </Link>
+                            </template>
+                            <template v-else>
+                                {{ item.user.name }}
+                            </template>
+                        </template>
                         <template v-slot:item.actions="{ item }">
                             <v-btn
                                 variant="text"

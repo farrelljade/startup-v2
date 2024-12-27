@@ -9,9 +9,9 @@ use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function show()
+    public function show(User $user = null)
     {
-        $user = Auth::user();
+        $user = $user ?? Auth::user();
 
         $user->load('prospects');
 

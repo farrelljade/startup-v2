@@ -24,7 +24,7 @@ const prospectHeaders = [
         <v-container fluid>
             <v-card class="mb-3 pa-2">
                 <v-card-title class="bg-success d-flex justify-space-between align-center">
-                    User Profile
+                    {{ user.name }}
                 </v-card-title>
             </v-card>
 
