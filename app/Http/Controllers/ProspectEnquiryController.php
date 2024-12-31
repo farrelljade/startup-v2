@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Prospect;
 use Illuminate\Http\Request;
@@ -9,13 +10,21 @@ use Inertia\Inertia;
 
 class ProspectEnquiryController extends Controller
 {
-    public function index(Prospect $prospect)
+    public function index($id)
     {
         $data = [];
 
-        $prospect->load(['user', 'leadSource'])->toArray();
+        // Try to find as customer first, then as prospect if not found
+        $company = Customer::with(['user'])
+            ->find($id) ??
+            Prospect::with(['user', 'leadSource'])
+                ->find($id);
 
-        $data['prospect'] = $prospect;
+        if (!$company) {
+            abort(404);
+        }
+
+        $data['prospect'] = $company;
         $data['products'] = Product::all();
 
         return Inertia::render('Prospects/ProspectProfile', $data);

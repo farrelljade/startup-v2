@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
@@ -28,13 +29,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
     Route::get('/prospects', [ProspectController::class, 'index'])->name('prospects.index');
-    Route::get('/prospects/{prospect}', [ProspectEnquiryController::class, 'index'])->name('prospect.enquiry');
+    Route::get('/prospects/{prospect}', [ProspectEnquiryController::class, 'index'])->name('company.profile');
     Route::get('/prospects/{prospect}/notes', [ProspectNotesController::class, 'index'])->name('prospect.notes');
     Route::post('/prospects/{prospect}/notes', [ProspectNotesController::class, 'store'])->name('notes.store');
     Route::patch('/prospects/{prospect}', [ProspectEnquiryController::class, 'update'])->name('prospects.update');
     Route::patch('/users/{user}/permissions', [UserController::class, 'updatePermissions'])->name('users.permissions.update');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::post('/prospects/{prospect}/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
 });
 
 require __DIR__.'/auth.php';

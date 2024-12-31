@@ -29,7 +29,7 @@ const user = computed(() => page.props.auth.user)
                     <v-list-item :href="route('dashboard')" prepend-icon="mdi-home" title="Home" value="home"></v-list-item>
                     <v-list-item :href="route('orders.index')" prepend-icon="mdi-cart" title="Orders Page" value="orders"></v-list-item>
                     <v-list-item :href="route('prospects.index')" prepend-icon="mdi-face-agent" title="Prospects Page" value="prospects"></v-list-item>
-                    <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
+                    <v-list-item :href="route('customers.index')" prepend-icon="mdi-account-group" title="Customers Page" value="customers"></v-list-item>
 
                     <v-list-group
                         v-if="userHasPermission(user, 'View Admin')"

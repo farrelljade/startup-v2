@@ -14,6 +14,7 @@ class ProspectController extends Controller
 
         $data['prospects'] = Prospect::query()
             ->with(['user', 'leadSource'])
+            ->where('status', '=', 'prospect')
             ->get();
 
         return Inertia::render('Prospects/ProspectsPage', $data);

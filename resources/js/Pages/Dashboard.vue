@@ -1,10 +1,22 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, router} from '@inertiajs/vue3';
+import { ref } from 'vue';
+import CustomerList from "@/Pages/Customer/Components/CustomerList.vue";
+
+const tab = ref('prospects');
 
 const props = defineProps({
     user: {
         type: Object,
+        required: true
+    },
+    prospects: {
+        type: Array,
+        required: true
+    },
+    customers: {
+        type: Array,
         required: true
     }
 });
@@ -31,26 +43,42 @@ const prospectHeaders = [
             <v-row>
                 <v-col cols="12" md="6">
                     <v-card>
-                        <v-card-title class="bg-success d-flex justify-space-between align-center">
-                            Prospects
+                        <v-tabs
+                            v-model="tab"
+                            bg-color="success"
+                        >
+                            <v-tab value="prospects">Prospects</v-tab>
+                            <v-tab value="customers">Customers</v-tab>
+                        </v-tabs>
+                        <v-card-title>
+                            <v-tabs-window v-model="tab">
+                                <v-tabs-window-item value="prospects">
+                                    <v-card-text class="mt-2">
+                                        <v-data-table
+                                            :headers="prospectHeaders"
+                                            :items="prospects"
+                                            :items-per-page="5"
+                                            class="elevation-3"
+                                        >
+                                            <template v-slot:item.actions="{ item }">
+                                                <v-btn
+                                                    variant="text"
+                                                    icon="mdi-location-enter"
+                                                    color="warning"
+                                                    @click="router.visit(route('company.profile', item.id ))"
+                                                />
+                                            </template>
+                                        </v-data-table>
+                                    </v-card-text>
+                                </v-tabs-window-item>
+
+                                <v-tabs-window-item value="customers">
+                                    <v-card-text class="mt-2">
+                                        <CustomerList :customers="customers" />
+                                    </v-card-text>
+                                </v-tabs-window-item>
+                            </v-tabs-window>
                         </v-card-title>
-                        <v-card-text class="mt-2">
-                            <v-data-table
-                                :headers="prospectHeaders"
-                                :items="user.prospects"
-                                :items-per-page="5"
-                                class="elevation-3"
-                            >
-                                <template v-slot:item.actions="{ item }">
-                                    <v-btn
-                                        variant="text"
-                                        icon="mdi-location-enter"
-                                        color="warning"
-                                        @click="router.visit(route('prospect.enquiry', item.id ))"
-                                    />
-                                </template>
-                            </v-data-table>
-                        </v-card-text>
                     </v-card>
                 </v-col>
 

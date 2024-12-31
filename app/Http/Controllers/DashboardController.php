@@ -11,12 +11,17 @@ class DashboardController extends Controller
 {
     public function show(User $user = null)
     {
-        $user = $user ?? Auth::user();
+        $data = [];
 
-        $user->load('prospects');
+        $data['user'] = $user ?? Auth::user();
+        $data['prospects'] = $data['user']->prospects()
+            ->where('status', 'prospect')
+            ->get();
+        $data['customers'] = $data['user']->prospects()
+            ->with('user')
+            ->where('status', 'customer')
+            ->get();
 
-        return Inertia::render('Dashboard', [
-            'user' => $user
-        ]);
+        return Inertia::render('Dashboard', $data);
     }
 }
