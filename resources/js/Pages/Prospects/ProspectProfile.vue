@@ -23,8 +23,20 @@ const props = defineProps({
     products: {
         type: Array,
         required: true
+    },
+    orders: {
+        type: Array,
+        required: true
     }
 })
+
+const ordersHeaders = [
+    { title: 'Order ID', key: 'order_number', align: 'start' },
+    { title: 'Product', key: 'product.name', align: 'start' },
+    { title: 'Quantity', key: 'quantity', align: 'end' },
+    { title: 'Total', key: 'total', align: 'end' },
+    { title: 'Actions', key: 'actions', align: 'center' }
+]
 
 const snackbar = ref(false);
 const snackbarMessage = ref('');
@@ -146,9 +158,17 @@ const selected_tab = 'prospect_enquiry';
                 <v-col cols="12" md="6">
                     <v-card>
                         <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
-                            Second Card
+                            Orders
                         </v-card-title>
-
+                        <v-card-text>
+                            <v-data-table
+                                :headers="ordersHeaders"
+                                :items="orders"
+                                :items-per-page="5"
+                                class="elevation-3"
+                            >
+                            </v-data-table>
+                        </v-card-text>
                     </v-card>
                 </v-col>
             </v-row>
