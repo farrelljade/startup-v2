@@ -29,11 +29,11 @@ const prospect_notes = 'prospect_notes';
                 <v-card-title class="bg-success d-flex justify-space-between align-center">
                     {{ prospect.company_name }}
 
-                    <v-tooltip text="New Order">
+                    <v-tooltip text="New Note">
                         <template v-slot:activator="{ props }">
                             <v-btn
                                 density="compact"
-                                color="success"
+                                color="green-darken-1"
                                 icon="mdi-plus"
                                 :="props"
                                 @click="addNoteDialog = true"

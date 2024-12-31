@@ -45,8 +45,11 @@ function submit() {
             </v-card-text>
 
             <v-card-actions>
+                <v-btn
+                    text="Cancel"
+                    @click="emit('close')"
+                ></v-btn>
                 <v-spacer></v-spacer>
-
                 <v-btn
                     text="Add Note"
                     @click="submit"

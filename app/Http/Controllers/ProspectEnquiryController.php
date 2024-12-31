@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Prospect;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,6 +16,7 @@ class ProspectEnquiryController extends Controller
         $prospect->load(['user', 'leadSource'])->toArray();
 
         $data['prospect'] = $prospect;
+        $data['products'] = Product::all();
 
         return Inertia::render('Prospects/ProspectProfile', $data);
     }

@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Prospect;
-use App\Services\ProspectConversionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class OrderController extends Controller
 {
-    protected ProspectConversionService $conversionService;
-
-    public function __construct(ProspectConversionService $conversionService)
+    public function index(Request $request)
     {
-        $this->conversionService = $conversionService;
+        $data = [];
+
+        $data['orders'] = Order::query()
+            ->with(['product', 'customer'])
+            ->get();
+
+        return Inertia::render('Customer/OrdersPage', $data);
     }
 
     public function store(Request $request, Prospect $prospect)
@@ -30,12 +36,29 @@ class OrderController extends Controller
             'total_profit' => ['required', 'numeric', 'min:0'],
         ]);
 
-        // Create the order first
-        $order = Order::create([
-            'order_number' => 'ORD-' . str_pad(Order::count() + 1, 5, '0', STR_PAD_LEFT),
-            ...$validated,
-        ]);
+        DB::transaction(function () use ($validated, $prospect) {
+            // Check if prospect is already a customer
+            if ($prospect->status !== 'customer') {
+                // Create new customer from prospect
+                $customer = Customer::create($prospect->only([
+                    'user_id', 'company_name', 'email', 'phone',
+                    'line_1', 'line_2', 'line_3', 'city',
+                    'county', 'postal_code'
+                ]));
 
-        $this->conversionService->convertToCustomer($prospect, $order);
+                $prospect->status = 'customer';
+                $prospect->save();
+            } else {
+                $customer = Customer::where('email', $prospect->email)->first();
+            }
+
+            Order::create([
+                'order_number' => 'ORD-' . str_pad(Order::count() + 1, 5, '0', STR_PAD_LEFT),
+                'customer_id' => $customer->id,
+                ...$validated,
+            ]);
+        });
+
+        return back();
     }
 }

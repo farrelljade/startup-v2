@@ -36,4 +36,9 @@ class Prospect extends Model
     {
         return $this->hasMany(Note::class);
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
