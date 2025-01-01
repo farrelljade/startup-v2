@@ -31,11 +31,11 @@ const props = defineProps({
 })
 
 const ordersHeaders = [
-    { title: 'Order ID', key: 'order_number', align: 'start' },
-    { title: 'Product', key: 'product.name', align: 'start' },
-    { title: 'Quantity', key: 'quantity', align: 'end' },
-    { title: 'Total', key: 'total', align: 'end' },
-    { title: 'Actions', key: 'actions', align: 'center' }
+    { title: 'Order ID', key: 'order_number' },
+    { title: 'Product', key: 'product.name' },
+    { title: 'Quantity', key: 'quantity' },
+    { title: 'Total', key: 'total' },
+    { title: 'Actions', key: 'actions' }
 ]
 
 const snackbar = ref(false);
@@ -167,6 +167,9 @@ const selected_tab = 'prospect_enquiry';
                                 :items-per-page="5"
                                 class="elevation-3"
                             >
+                                <template v-slot:item.quantity="{ item }">
+                                    {{ item.quantity.toLocaleString() }}
+                                </template>
                             </v-data-table>
                         </v-card-text>
                     </v-card>
