@@ -1,8 +1,8 @@
 <script setup>
-import {computed, ref} from 'vue';
+import {computed, reactive, ref} from 'vue';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head, usePage} from '@inertiajs/vue3';
-import {updateUserPermissions} from "@/helpers/helpers.js";
+import {updateUser, updateUserPermissions, userHasPermission} from "@/helpers/helpers.js";
 
 const props = defineProps({
     user: {
@@ -17,6 +17,19 @@ const props = defineProps({
 
 const snackbar = ref(false);
 const snackbarMessage = ref('');
+
+const form = reactive({
+    email: props.user.email
+})
+
+const authUser = computed(() => usePage().props.auth.user);
+
+function handleUpdate() {
+    updateUser(props.user.id, form, () => {
+        snackbar.value = true;
+        snackbarMessage.value = 'User updated!';
+    });
+}
 
 // Create a reactive object to track permissions
 const selectedPermissions = ref(
@@ -63,9 +76,10 @@ function handlePermissionChange(permissionName) {
                                 </v-col>
                                 <v-col md="6">
                                     <v-text-field
-                                        v-model="user.email"
+                                        v-model="form.email"
                                         label="Email"
-                                        readonly
+                                        @change="handleUpdate"
+                                        :readonly="!userHasPermission(authUser, 'Edit User')"
                                     />
                                 </v-col>
                             </v-row>

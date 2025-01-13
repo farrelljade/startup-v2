@@ -24,9 +24,19 @@ class UserController extends Controller
 
         $data['user'] = $user;
         $data['availablePermissions'] = Permission::all();
-        $data['userTotalOrders'] = $user->orders()->count();
 
         return Inertia::render('Admin/UserProfile', $data);
+    }
+
+    public function update(Request $request, User $user): \Illuminate\Http\RedirectResponse
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'email']
+        ]);
+
+        $user->update($validated);
+
+        return back();
     }
 
     public function updatePermissions(Request $request, User $user)

@@ -15,7 +15,6 @@ function closeDialog() {
 }
 
 const page = usePage()
-const user = computed(() => page.props.auth.user)
 
 const props = defineProps({
     prospect: {
@@ -59,6 +58,8 @@ const snackbarMessage = ref('');
 const form = reactive({
     phone: props.prospect.phone
 })
+
+const user = computed(() => page.props.auth.user);
 
 function handleUpdate() {
     updateProspect(props.prospect.id, form, () => {

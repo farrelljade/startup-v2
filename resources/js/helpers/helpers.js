@@ -17,18 +17,32 @@ export function updateProspect(prospectId, data, onSuccess) {
     );
 }
 
+export function updateUser(userId, data, onSuccess) {
+    return router.patch(
+        route('users.update', { user: userId }),
+        data,
+        {
+            onSuccess: () => {
+                if (onSuccess) {
+                    onSuccess();
+                }
+            },
+            onError: (errors) => {
+                console.error('Update failed:', errors);
+            }
+        }
+    );
+}
+
 export function userHasPermission(user, permissionName) {
-    // If user is admin, they have all permissions
     if (!user) {
         return false;
     }
 
-    // If user is admin, they have all permissions
     if (user.is_admin) {
         return true;
     }
 
-    // Check if user has the specific permission
     return user.permissions?.some(permission => permission.name === permissionName) || false;
 }
 

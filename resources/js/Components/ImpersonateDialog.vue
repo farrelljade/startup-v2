@@ -72,7 +72,7 @@ const impersonateUser = () => {
                 </v-btn>
                 <v-spacer/>
                 <v-btn
-                    color="primary"
+                    color="success"
                     @click="impersonateUser"
                     :loading="loading"
                     variant="tonal"

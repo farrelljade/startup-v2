@@ -52,7 +52,7 @@ const openSidebar = () => {
                 <v-divider></v-divider>
 
                 <v-list density="compact" nav>
-                    <v-list-item v-if="!rail" prepend-icon="mdi-menu-open" @click.stop="rail = !rail"></v-list-item>
+                    <v-list-item v-if="!rail" prepend-icon="mdi-menu-open" @click.stop="rail = !rail" title="Minimise Sidebar"></v-list-item>
                     <v-list-item v-if="rail" prepend-icon="mdi-menu-close" @click.stop="rail = false"></v-list-item>
                     <v-list-item :href="route('dashboard')" prepend-icon="mdi-home" title="Home" value="home"></v-list-item>
                     <v-list-item :href="route('orders.index')" prepend-icon="mdi-cart" title="Orders Page" value="orders"></v-list-item>
@@ -80,7 +80,7 @@ const openSidebar = () => {
                         <v-btn
                             v-if="user && user.is_admin"
                             :block="true"
-                            color="blue"
+                            color="white"
                             class="mb-2"
                             @click="openImpersonateDialog"
                         >
@@ -88,7 +88,6 @@ const openSidebar = () => {
                             <span v-if="!rail">Impersonate</span>
                         </v-btn>
 
-                        <!-- Your existing Stop Impersonating button -->
                         <v-btn
                             v-if="readCookie('impersonate')"
                             :block="true"

@@ -83,8 +83,6 @@ function onProductSelect(productId) {
     }
 }
 
-console.log('Prospect ID:', props.prospectId);
-
 const submitForm = () => {
     form.post(route('orders.store', { prospect: props.prospectId }), {
         onSuccess: () => {

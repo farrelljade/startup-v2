@@ -33,10 +33,12 @@ class HandleInertiaRequests extends Middleware
 
         if (array_key_exists('impersonate', $_COOKIE) && !empty($_COOKIE['impersonate'])) {
             $user = User::query()
+                ->with('permissions')
                 ->find($_COOKIE['impersonate']);
         } else {
             if ($request->user()) {
                 $user = User::query()
+                    ->with('permissions')
                     ->find($request->user()->id);
             } else {
                 $user = [];
