@@ -24,6 +24,7 @@ class UserController extends Controller
 
         $data['user'] = $user;
         $data['availablePermissions'] = Permission::all();
+        $data['userTotalOrders'] = $user->orders()->count();
 
         return Inertia::render('Admin/UserProfile', $data);
     }

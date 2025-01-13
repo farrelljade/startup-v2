@@ -29,6 +29,7 @@ class ProspectEnquiryController extends Controller
             if ($customer) {
                 $data['orders'] = Order::where('customer_id', $customer->id)
                     ->with('product')
+                    ->orderBy('created_at', 'desc')
                     ->get();
             } else {
                 $data['orders'] = collect([]);

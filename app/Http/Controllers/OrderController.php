@@ -16,7 +16,8 @@ class OrderController extends Controller
         $data = [];
 
         $data['orders'] = Order::query()
-            ->with(['product', 'customer'])
+            ->with(['product', 'customer', 'customer.prospect'])
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return Inertia::render('Customer/OrdersPage', $data);
@@ -40,11 +41,14 @@ class OrderController extends Controller
             // Check if prospect is already a customer
             if ($prospect->status !== 'customer') {
                 // Create new customer from prospect
-                $customer = Customer::create($prospect->only([
-                    'user_id', 'company_name', 'email', 'phone',
-                    'line_1', 'line_2', 'line_3', 'city',
-                    'county', 'postal_code'
-                ]));
+                $customer = Customer::create([
+                    ...$prospect->only([
+                        'user_id', 'company_name', 'email', 'phone',
+                        'line_1', 'line_2', 'line_3', 'city',
+                        'county', 'postal_code'
+                    ]),
+                    'prospect_id' => $prospect->id
+                ]);
 
                 $prospect->status = 'customer';
                 $prospect->save();

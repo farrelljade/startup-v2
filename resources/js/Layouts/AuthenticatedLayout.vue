@@ -1,10 +1,34 @@
 <script setup>
-import { usePage, Link } from '@inertiajs/vue3';
-import {computed, ref} from 'vue';
-import {userHasPermission} from "@/helpers/helpers.js";
+import {usePage, Link, router} from '@inertiajs/vue3';
+import {computed, defineAsyncComponent, ref} from 'vue';
+import {createCookie, readCookie, userHasPermission} from "@/helpers/helpers.js";
 
+const drawer = ref(true);
+const rail = ref(false);
+const impersonateUserDialog = ref(false);
 const page = usePage()
-const user = computed(() => page.props.auth.user)
+const user = computed(() => usePage().props.auth.user)
+
+const openImpersonateDialog = () => {
+    impersonateUserDialog.value = true;
+}
+
+const impersonateDialog = defineAsyncComponent(() =>
+    import('@/Components/ImpersonateDialog.vue')
+);
+
+const removeImpersonate = () => {
+    createCookie('impersonate', '', -1);
+    window.location.reload();
+}
+
+const logout = () => {
+    router.post('logout');
+}
+
+const openSidebar = () => {
+    rail.value = true;
+}
 
 </script>
 
@@ -12,11 +36,13 @@ const user = computed(() => page.props.auth.user)
     <v-card>
         <v-layout>
             <v-navigation-drawer
-                expand-on-hover
-                rail
+                v-model="drawer"
+                :rail="rail"
+                @click="rail = false"
             >
                 <v-list>
                     <v-list-item
+                        v-if="user"
                         prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
                         :subtitle="user.email"
                         :title="user.name"
@@ -26,16 +52,18 @@ const user = computed(() => page.props.auth.user)
                 <v-divider></v-divider>
 
                 <v-list density="compact" nav>
+                    <v-list-item v-if="!rail" prepend-icon="mdi-menu-open" @click.stop="rail = !rail"></v-list-item>
+                    <v-list-item v-if="rail" prepend-icon="mdi-menu-close" @click.stop="rail = false"></v-list-item>
                     <v-list-item :href="route('dashboard')" prepend-icon="mdi-home" title="Home" value="home"></v-list-item>
                     <v-list-item :href="route('orders.index')" prepend-icon="mdi-cart" title="Orders Page" value="orders"></v-list-item>
                     <v-list-item :href="route('prospects.index')" prepend-icon="mdi-face-agent" title="Prospects Page" value="prospects"></v-list-item>
                     <v-list-item :href="route('customers.index')" prepend-icon="mdi-account-group" title="Customers Page" value="customers"></v-list-item>
 
                     <v-list-group
-                        v-if="userHasPermission(user, 'View Admin')"
+                        v-if="user && userHasPermission(user, 'View Admin')"
                         value="Admin"
                     >
-                        <template v-slot:activator="{ props}">
+                        <template v-slot:activator="{ props }">
                             <v-list-item
                                 prepend-icon="mdi-account-circle"
                                 v-bind="props"
@@ -45,18 +73,44 @@ const user = computed(() => page.props.auth.user)
 
                         <v-list-item :href="route('users.index')" title="Users Page" value="users"></v-list-item>
                     </v-list-group>
-
-                    <v-list-item class="align-self-center mb-2">
-                        <Link :href="route('logout')" method="post" as="button" class="v-list-item__link">
-                            <v-btn
-                                prepend-icon="mdi-logout"
-                                color="red"
-                            >
-                                logout
-                            </v-btn>
-                        </Link>
-                    </v-list-item>
                 </v-list>
+
+                <template v-slot:append>
+                    <div class="pa-2">
+                        <v-btn
+                            v-if="user && user.is_admin"
+                            :block="true"
+                            color="blue"
+                            class="mb-2"
+                            @click="openImpersonateDialog"
+                        >
+                            <v-icon>mdi-account-convert</v-icon>
+                            <span v-if="!rail">Impersonate</span>
+                        </v-btn>
+
+                        <!-- Your existing Stop Impersonating button -->
+                        <v-btn
+                            v-if="readCookie('impersonate')"
+                            :block="true"
+                            color="orange"
+                            class="mb-2"
+                            @click="removeImpersonate"
+                        >
+                            <v-icon>mdi-logout</v-icon>
+                            <span v-if="!rail">Stop Impersonating</span>
+                        </v-btn>
+                        <form @submit.prevent="logout">
+                            <v-btn
+                                :block="true"
+                                color="red"
+                                type="submit"
+                            >
+                                <v-icon>mdi-logout</v-icon>
+                                <span v-if="!rail">Logout</span>
+                            </v-btn>
+                        </form>
+                    </div>
+                </template>
             </v-navigation-drawer>
 
             <v-main>
@@ -64,4 +118,9 @@ const user = computed(() => page.props.auth.user)
             </v-main>
         </v-layout>
     </v-card>
+
+    <impersonate-dialog
+        @close="impersonateUserDialog = false"
+        :dialog="impersonateUserDialog"
+    />
 </template>

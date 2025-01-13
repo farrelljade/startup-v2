@@ -13,7 +13,13 @@ class DashboardController extends Controller
     {
         $data = [];
 
-        $data['user'] = $user ?? Auth::user();
+        if (array_key_exists('impersonate', $_COOKIE) && !empty($_COOKIE['impersonate'])) {
+            $data['user'] = User::select(['id', 'name', 'email', 'is_admin'])
+                ->find($_COOKIE['impersonate']);
+        } else {
+            $data['user'] = $user ?? Auth::user();
+        }
+
         $data['prospects'] = $data['user']->prospects()
             ->where('status', 'prospect')
             ->get();
@@ -22,6 +28,6 @@ class DashboardController extends Controller
             ->where('status', 'customer')
             ->get();
 
-        return Inertia::render('Dashboard', $data);
+        return Inertia::render('User/Dashboard', $data);
     }
 }

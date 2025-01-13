@@ -19,6 +19,11 @@ export function updateProspect(prospectId, data, onSuccess) {
 
 export function userHasPermission(user, permissionName) {
     // If user is admin, they have all permissions
+    if (!user) {
+        return false;
+    }
+
+    // If user is admin, they have all permissions
     if (user.is_admin) {
         return true;
     }
@@ -42,4 +47,31 @@ export function updateUserPermissions(userId, permissions, onSuccess) {
             }
         }
     );
+}
+
+export function createCookie(name, value, days) {
+    let expires;
+
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = `; expires=${date.toUTCString()}`;
+    } else {
+        expires = "";
+    }
+    document.cookie = `${name}=${value}${expires}; path=/`;
+}
+
+export function readCookie(name) {
+    const nameEQ = encodeURIComponent(name) + "=";
+    const ca = document.cookie.split(';');
+
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ')
+            c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0)
+            return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    }
+    return null;
 }

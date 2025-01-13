@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,11 +30,32 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return [
-            ...parent::share($request),
+
+        if (array_key_exists('impersonate', $_COOKIE) && !empty($_COOKIE['impersonate'])) {
+            $user = User::query()
+                ->find($_COOKIE['impersonate']);
+        } else {
+            if ($request->user()) {
+                $user = User::query()
+                    ->find($request->user()->id);
+            } else {
+                $user = [];
+            }
+        }
+
+        $users = [];
+        if ($user && $user->is_admin) {
+            $users = User::query()
+                ->select(['id', 'name', 'email'])
+                ->orderBy('name')
+                ->get();
+        }
+
+        return array_merge(parent::share($request), [
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
             ],
-        ];
+            'users' => $users,
+        ]);
     }
 }

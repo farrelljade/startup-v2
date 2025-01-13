@@ -1,16 +1,12 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {Head, router} from '@inertiajs/vue3';
-import { ref } from 'vue';
+import {Head, router, usePage} from '@inertiajs/vue3';
+import {computed, ref} from 'vue';
 import CustomerList from "@/Pages/Customer/Components/CustomerList.vue";
 
 const tab = ref('prospects');
 
 const props = defineProps({
-    user: {
-        type: Object,
-        required: true
-    },
     prospects: {
         type: Array,
         required: true
@@ -26,6 +22,8 @@ const prospectHeaders = [
     {title: 'Email', key: 'email', sortable: false},
     {title: 'Actions', key: 'actions', sortable: false},
 ]
+
+const user = computed(() => usePage().props.auth.user);
 </script>
 
 <template>

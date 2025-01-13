@@ -10,6 +10,7 @@ class Customer extends Model
 {
     protected $fillable = [
         'user_id',
+        'prospect_id',
         'company_name',
         'email',
         'phone',
@@ -29,5 +30,10 @@ class Customer extends Model
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function prospect(): BelongsTo
+    {
+        return $this->belongsTo(Prospect::class);
     }
 }

@@ -7,6 +7,8 @@ import {updateProspect, userHasPermission} from "@/helpers/helpers.js";
 import AddNewOrder from "@/Pages/Customer/Components/AddNewOrder.vue";
 
 const addOrderDialog = ref(false);
+const showOrderDialog = ref(false);
+const selectedOrder = ref(null);
 
 function closeDialog() {
     addOrderDialog.value = false;
@@ -38,6 +40,19 @@ const ordersHeaders = [
     { title: 'Actions', key: 'actions' }
 ]
 
+const showOrderHeaders = [
+    { title: 'Order ID', key: 'order_number' },
+    { title: 'Product', key: 'product.name' },
+    { title: 'Quantity', key: 'quantity' },
+    { title: 'PPL Sell', key: 'ppl_sell' },
+    { title: 'PPL Cost', key: 'ppl_cost'},
+    { title: 'Nett Total', key: 'nett_total' },
+    { title: 'VAT', key: 'vat' },
+    { title: 'Total', key: 'total' },
+    { title: 'PPL Profit', key: 'ppl_profit' },
+    { title: 'Total Profit', key: 'total_profit' },
+]
+
 const snackbar = ref(false);
 const snackbarMessage = ref('');
 
@@ -55,6 +70,11 @@ function handleUpdate() {
 function handleOrderSuccess() {
     snackbar.value = true;
     snackbarMessage.value = 'Order created successfully!';
+}
+
+function showOrder(order) {
+    selectedOrder.value = order;
+    showOrderDialog.value = true;
 }
 
 const selected_tab = 'prospect_enquiry';
@@ -170,6 +190,18 @@ const selected_tab = 'prospect_enquiry';
                                 <template v-slot:item.quantity="{ item }">
                                     {{ item.quantity.toLocaleString() }}
                                 </template>
+                                <template v-slot:item.total="{ item }">
+                                    £{{ item.total.toLocaleString() }}
+                                </template>
+                                <template v-slot:item.actions="{ item }">
+                                    <v-btn
+                                        variant="text"
+                                        color="warning"
+                                        icon="mdi-eye"
+                                        @click="showOrder(item)"
+                                    >
+                                    </v-btn>
+                                </template>
                             </v-data-table>
                         </v-card-text>
                     </v-card>
@@ -186,6 +218,28 @@ const selected_tab = 'prospect_enquiry';
                     @close="closeDialog"
                     @order-success="handleOrderSuccess"
                 />
+            </v-dialog>
+
+            <v-dialog
+                v-model="showOrderDialog"
+                max-width="1100"
+            >
+                <v-card v-if="selectedOrder">
+                    <v-card-title class="bg-green-darken-1">
+                        Order Details
+                    </v-card-title>
+                    <v-data-table
+                        :headers="showOrderHeaders"
+                        :items="[selectedOrder]"
+                        class="elevation-3"
+                    >
+                        <template v-slot:item.order_number="{ item }">
+                            {{ item.order_number }}
+                        </template>
+
+                    </v-data-table>
+                </v-card>
+
             </v-dialog>
 
             <v-snackbar
