@@ -98,7 +98,6 @@ const selected_tab = 'prospect_enquiry';
                     <v-card>
                         <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
                             Details
-
                             <v-tooltip text="New Order">
                                 <template v-slot:activator="{ props }">
                                     <v-btn
