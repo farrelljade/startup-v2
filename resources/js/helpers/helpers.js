@@ -90,7 +90,7 @@ export function readCookie(name) {
     return null;
 }
 
-export function numberVisibility(prospectId, data, showNumber, notificationMessage = 'Request to view number logged!') {
+export function numberVisibility(prospectId, data, showNumber) {
 
     const newValue = !showNumber.value;
     showNumber.value = newValue;
@@ -103,8 +103,7 @@ export function numberVisibility(prospectId, data, showNumber, notificationMessa
 
         updateProspect(
             prospectId,
-            updatedData,
-            notificationMessage
+            updatedData
         )
     }
 

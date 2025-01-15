@@ -69,6 +69,8 @@ const toggleNumber = () => {
         { phone_viewed_at: true },
         showNumber
     )
+    snackbar.value = true;
+    snackbarMessage.value = 'Phone number revealed!';
 }
 
 function handleUpdate() {

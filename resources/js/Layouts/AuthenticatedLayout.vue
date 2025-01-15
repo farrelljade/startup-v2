@@ -41,18 +41,12 @@ const openSidebar = () => {
                 @click="rail = false"
             >
                 <v-list>
-                    <v-list-item
-                        v-if="user"
-                        prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-                        :subtitle="user.email"
-                        :title="user.name"
-                    ></v-list-item>
+                    <v-list-item v-if="!rail" prepend-icon="mdi-menu-open" @click.stop="rail = !rail">{{ user.name }}</v-list-item>
                 </v-list>
 
                 <v-divider></v-divider>
 
                 <v-list density="compact" nav>
-                    <v-list-item v-if="!rail" prepend-icon="mdi-menu-open" @click.stop="rail = !rail" title="Minimise Sidebar"></v-list-item>
                     <v-list-item v-if="rail" prepend-icon="mdi-menu-close" @click.stop="rail = false"></v-list-item>
                     <v-list-item :href="route('dashboard')" prepend-icon="mdi-home" title="Home" value="home"></v-list-item>
                     <v-list-item :href="route('orders.index')" prepend-icon="mdi-cart" title="Orders Page" value="orders"></v-list-item>
