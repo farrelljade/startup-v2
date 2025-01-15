@@ -4,15 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Prospect extends Model
+class Prospect extends Model Implements Auditable
 {
     use Hasfactory;
+    use \OwenIt\Auditing\Auditable;
+
     protected $fillable = [
         'user_id',
         'company_name',
         'email',
         'phone',
+        'phone_viewed_at',
         'line_1',
         'line_2',
         'line_3',

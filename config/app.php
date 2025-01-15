@@ -124,6 +124,27 @@ return [
     ],
 
     'providers' => [
+        /*
+         * Laravel Framework Service Providers...
+         */
+        Illuminate\Foundation\Providers\ArtisanServiceProvider::class,
+        Illuminate\Cache\CacheServiceProvider::class,
+        Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
+        Illuminate\Foundation\Providers\FoundationServiceProvider::class,
+        Illuminate\Database\DatabaseServiceProvider::class,
+        Illuminate\Filesystem\FilesystemServiceProvider::class,
+        Illuminate\View\ViewServiceProvider::class,
+        Illuminate\Session\SessionServiceProvider::class,
+        Illuminate\Encryption\EncryptionServiceProvider::class,
+        Illuminate\Cookie\CookieServiceProvider::class,
+        Illuminate\Auth\AuthServiceProvider::class,
+        Illuminate\Hashing\HashServiceProvider::class,
+        Illuminate\Validation\ValidationServiceProvider::class,
+        Illuminate\Translation\TranslationServiceProvider::class,
+
+        /*
+         * Package Service Providers...
+         */
         OwenIt\Auditing\AuditingServiceProvider::class,
     ],
 ];

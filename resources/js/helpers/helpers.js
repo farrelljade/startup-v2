@@ -89,3 +89,24 @@ export function readCookie(name) {
     }
     return null;
 }
+
+export function numberVisibility(prospectId, data, showNumber, notificationMessage = 'Request to view number logged!') {
+
+    const newValue = !showNumber.value;
+    showNumber.value = newValue;
+
+    if (newValue) {
+        const updatedData = {
+            ...data,
+            phone_viewed_at: new Date().toISOString()
+        };
+
+        updateProspect(
+            prospectId,
+            updatedData,
+            notificationMessage
+        )
+    }
+
+    return newValue;
+}

@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, usePage} from '@inertiajs/vue3';
 import ProspectTabs from "@/Pages/Prospects/Components/ProspectTabs.vue";
 import {computed, reactive, ref} from "vue";
-import {updateProspect, userHasPermission} from "@/helpers/helpers.js";
+import {numberVisibility, updateProspect, userHasPermission} from "@/helpers/helpers.js";
 import AddNewOrder from "@/Pages/Customer/Components/AddNewOrder.vue";
 
 const addOrderDialog = ref(false);
@@ -55,11 +55,21 @@ const showOrderHeaders = [
 const snackbar = ref(false);
 const snackbarMessage = ref('');
 
+const showNumber = ref(false);
+
 const form = reactive({
     phone: props.prospect.phone
 })
 
 const user = computed(() => page.props.auth.user);
+
+const toggleNumber = () => {
+    numberVisibility(
+        props.prospect.id,
+        { phone_viewed_at: true },
+        showNumber
+    )
+}
 
 function handleUpdate() {
     updateProspect(props.prospect.id, form, () => {
@@ -165,6 +175,9 @@ const selected_tab = 'prospect_enquiry';
                                 <v-col md="6">
                                     <v-text-field
                                         v-model="form.phone"
+                                        :type="showNumber ? 'text' : 'password'"
+                                        :append-icon="form.phone ? (showNumber ? 'mdi-eye' : 'mdi-eye-off') : ''"
+                                        @click:append="toggleNumber"
                                         label="Phone"
                                         @change="handleUpdate"
                                         :readonly="!userHasPermission(user, 'Update Prospect')"

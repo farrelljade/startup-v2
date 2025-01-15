@@ -48,7 +48,12 @@ class ProspectEnquiryController extends Controller
     {
         $validated = $request->validate([
             'phone' => ['nullable', 'string'],
+            'phone_viewed_at' => ['nullable', 'date'],
         ]);
+
+        if (isset($validated['phone_viewed_at'])) {
+            $validated['phone_viewed_at'] = now();
+        }
 
         $prospect->update($validated);
 
