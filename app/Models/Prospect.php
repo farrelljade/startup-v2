@@ -50,4 +50,9 @@ class Prospect extends Model Implements Auditable
     {
         return $this->hasOne(Customer::class);
     }
+
+    public function tankSales()
+    {
+        return $this->hasMany(TankSale::class);
+    }
 }

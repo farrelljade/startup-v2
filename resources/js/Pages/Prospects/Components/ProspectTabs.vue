@@ -24,6 +24,7 @@ function goToTab(routeName) {
     >
         <v-tab value="prospect_enquiry" @click="goToTab('company.profile')">Profile</v-tab>
         <v-tab value="prospect_notes" @click="goToTab('prospect.notes')">Notes</v-tab>
+        <v-tab value="tank_sales" @click="goToTab('tank-sales')">Tank Sales</v-tab>
     </v-tabs>
     </v-card>
 </template>

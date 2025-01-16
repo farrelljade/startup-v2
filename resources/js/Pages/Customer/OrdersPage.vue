@@ -26,7 +26,7 @@ const ordersHeaders = [
         <Head title="Orders" />
 
         <v-container fluid>
-            <v-card class="mb-3 pa-3">
+            <v-card class="mb-3 pa-2">
                 <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
                     Orders Page
                 </v-card-title>

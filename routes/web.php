@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProspectController;
 use App\Http\Controllers\ProspectEnquiryController;
 use App\Http\Controllers\ProspectNotesController;
+use App\Http\Controllers\TankSaleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/prospects/{prospect}', [ProspectEnquiryController::class, 'index'])->name('company.profile');
     Route::get('/prospects/{prospect}/notes', [ProspectNotesController::class, 'index'])->name('prospect.notes');
     Route::post('/prospects/{prospect}/notes', [ProspectNotesController::class, 'store'])->name('notes.store');
+    Route::get('/prospects/{prospect}/tank-sales', [TankSaleController::class, 'index'])->name('tank-sales');
     Route::patch('/prospects/{prospect}', [ProspectEnquiryController::class, 'update'])->name('prospects.update');
     Route::patch('/users/{user}/permissions', [UserController::class, 'updatePermissions'])->name('users.permissions.update');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
