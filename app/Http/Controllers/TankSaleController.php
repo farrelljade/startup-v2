@@ -12,15 +12,11 @@ class TankSaleController extends Controller
 {
     public function index(String $id)
     {
-        $prospect = Prospect::query()
+        $data['prospect'] = Prospect::query()
             ->with(['tankSales', 'customer'])
-            ->find($id);
+            ->findOrFail($id);
 
-        if ($prospect instanceof Prospect) {
-            $data['prospect'] = $prospect;
-
-            return Inertia::render('TankSales/TankSalesPage', $data);
-        }
+        return Inertia::render('TankSales/TankSalesPage', $data);
     }
 
     public function store(TankSaleStoreRequest $request)
