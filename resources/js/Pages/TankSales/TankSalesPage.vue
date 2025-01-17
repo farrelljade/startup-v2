@@ -58,9 +58,9 @@ const tank_sales = 'tank_sales';
 
             <ProspectTabs :prospect="prospect" :selected_tab="tank_sales"/>
 
-            <v-card class="mt-4">
+            <v-card class="mt-4 pa-1">
                 <v-card-title class="bg-green-lighten-1 d-flex justify-space-between align-center">
-                    Tank Sale Requests
+                    Tank Requests
                 </v-card-title>
                 <v-card-text>
                     <v-data-table

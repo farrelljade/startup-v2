@@ -27,6 +27,7 @@ const form = useForm({
     timeline: null,
     fuel_type: null,
     tank_type: null,
+    tank_type_other: null,
     tank_size: null,
     tank_location: null,
     additional_requirements: null,
@@ -85,7 +86,7 @@ const submit = () => {
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
-                        <v-autocomplete
+                        <v-text-field
                             v-model="form.contact_email"
                             label="Contact Email"
                             variant="underlined"
@@ -106,6 +107,7 @@ const submit = () => {
                         <v-checkbox
                             v-model="form.requirement_urgent"
                             label="Urgent Requirement"
+                            color="green-darken-1"
                             hint="e.g. Is the tank leaking, damaged, or faulty?"
                             persistent-hint
                         />
@@ -137,6 +139,15 @@ const submit = () => {
                             variant="underlined"
                             clearable
                             :error-messages="form.errors.tank_type"
+                        />
+                    </v-col>
+                    <v-col v-if="form.tank_type === 'Other'" cols="12" sm="6">
+                        <v-text-field
+                            v-model="form.tank_type_other"
+                            label="Tank Type (Other)"
+                            variant="underlined"
+                            clearable
+                            :error-messages="form.errors.tank_type_other"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">

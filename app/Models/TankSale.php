@@ -24,6 +24,7 @@ class TankSale extends Model implements Auditable
         'timeline',
         'fuel_type',
         'tank_type',
+        'tank_type_other',
         'tank_size',
         'tank_location',
         'additional_requirements',
