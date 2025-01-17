@@ -1,6 +1,6 @@
 <script setup>
-import { reactive } from 'vue';
-import { router } from '@inertiajs/vue3';
+import {ref} from 'vue';
+import {useForm} from '@inertiajs/vue3';
 
 const props = defineProps({
     prospect: {
@@ -9,23 +9,23 @@ const props = defineProps({
     }
 })
 
+const loading = ref(false);
+
 const emit = defineEmits(['close']);
 
-const form = reactive({
+const form = useForm({
     prospect_id: props.prospect.id,
     note: null
 })
 
-function submit() {
-    router.post(route('notes.store', { prospect: props.prospect.id }),
-        form,
-        {
-            onSuccess: () => {
-                form.note = null;
-                emit('close');
-            }
+const submit = () => {
+    loading.value = true;
+    form.post(route('notes.store', { prospect: props.prospect.id }), {
+        onSuccess: () => {
+            form.reset();
+            emit('close');
         }
-    );
+    });
 }
 </script>
 
@@ -46,13 +46,18 @@ function submit() {
 
             <v-card-actions>
                 <v-btn
+                    variant="tonal"
+                    color="error"
                     text="Cancel"
                     @click="emit('close')"
                 ></v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
+                    variant="tonal"
+                    color="success"
                     text="Add Note"
                     @click="submit"
+                    :loading="loading"
                 ></v-btn>
             </v-card-actions>
         </v-card>

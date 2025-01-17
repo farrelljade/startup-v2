@@ -14,7 +14,7 @@ const props = defineProps({
     }
 })
 
-function closeDialog() {
+const closeDialog = () => {
     addNoteDialog.value = false;
 }
 
@@ -25,22 +25,17 @@ const prospect_notes = 'prospect_notes';
     <AuthenticatedLayout>
         <Head title="Notes" />
         <v-container fluid>
-            <v-card class="mb-3 pa-2">
-                <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
+            <v-card class="mb-3 pa-1">
+                <v-card-title class="bg-green-darken-1">
                     {{ prospect.company_name }}
 
-                    <v-tooltip text="New Note">
-                        <template v-slot:activator="{ props }">
-                            <v-btn
-                                density="compact"
-                                color="green-darken-1"
-                                icon="mdi-plus"
-                                :="props"
-                                @click="addNoteDialog = true"
-                            >
-                            </v-btn>
-                        </template>
-                    </v-tooltip>
+                    <v-btn
+                        size="small"
+                        class="float-right"
+                        variant="elevated"
+                        @click="addNoteDialog = true"
+                    >New Note
+                    </v-btn>
                 </v-card-title>
             </v-card>
 
@@ -51,13 +46,12 @@ const prospect_notes = 'prospect_notes';
                     <v-timeline-item
                         v-for="note in prospect.notes"
                         :key="note.id"
-                        dot-color="info"
+                        dot-color="green-darken-1"
                         icon="mdi-note-text"
                         elevation="2"
-
                     >
-                        <v-card elevation="2" class="pa-2">
-                            <v-card-title class="bg-info">
+                        <v-card elevation="2" class="pa-1" variant="tonal">
+                            <v-card-title class="bg-green-darken-1">
                                 {{ note.user.name }} @ {{ new Date(note.created_at).toLocaleString('gb') }}
                             </v-card-title>
                             <v-card-text elevation="2" class="pa-2">
@@ -72,6 +66,7 @@ const prospect_notes = 'prospect_notes';
         <v-dialog
             v-model="addNoteDialog"
             max-width="600"
+            persistent
         >
             <AddProspectNote
                 :prospect="prospect"
