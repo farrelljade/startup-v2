@@ -1,7 +1,7 @@
 <script setup>
 
-import {router, useForm, usePage} from "@inertiajs/vue3";
-import {computed, ref} from "vue";
+import {useForm, usePage} from "@inertiajs/vue3";
+import {computed} from "vue";
 import ProductsEnum from "@/enums/ProductsEnum.js";
 import TankTypeEnum from "@/enums/TankTypeEnum.js";
 
@@ -11,8 +11,6 @@ const props = defineProps({
         required: true
     }
 })
-
-// const loading = ref(false);
 
 const emit = defineEmits(['close']);
 
@@ -87,13 +85,12 @@ const submit = () => {
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
-                        <v-text-field
+                        <v-autocomplete
                             v-model="form.contact_email"
                             label="Contact Email"
                             variant="underlined"
                             clearable
                             :error-messages="form.errors.contact_email"
-                            :error="!!form.errors.contact_email"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -103,7 +100,6 @@ const submit = () => {
                             variant="underlined"
                             clearable
                             :error-messages="form.errors.contact_phone"
-                            :error="!!form.errors.contact_phone"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -121,7 +117,6 @@ const submit = () => {
                             variant="underlined"
                             clearable
                             :error-messages="form.errors.timeline"
-                            :error="!!form.errors.timeline"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -132,7 +127,6 @@ const submit = () => {
                             variant="underlined"
                             clearable
                             :error-messages="form.errors.fuel_type"
-                            :error="!!form.errors.fuel_type"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -143,7 +137,6 @@ const submit = () => {
                             variant="underlined"
                             clearable
                             :error-messages="form.errors.tank_type"
-                            :error="!!form.errors.tank_type"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -154,7 +147,6 @@ const submit = () => {
                             variant="underlined"
                             clearable
                             :error-messages="form.errors.tank_size"
-                            :error="!!form.errors.tank_size"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -165,7 +157,6 @@ const submit = () => {
                             variant="underlined"
                             clearable
                             :error-messages="form.errors.tank_location"
-                            :error="!!form.errors.tank_location"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -175,7 +166,6 @@ const submit = () => {
                             variant="underlined"
                             clearable
                             :error-messages="form.errors.additional_requirements"
-                            :error="!!form.errors.additional_requirements"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -185,7 +175,6 @@ const submit = () => {
                             variant="underlined"
                             clearable
                             :error-messages="form.errors.quotes"
-                            :error="!!form.errors.quotes"
                         />
                     </v-col>
                 </v-row>

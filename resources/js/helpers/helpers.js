@@ -91,7 +91,6 @@ export function readCookie(name) {
 }
 
 export function numberVisibility(prospectId, data, showNumber) {
-
     const newValue = !showNumber.value;
     showNumber.value = newValue;
 

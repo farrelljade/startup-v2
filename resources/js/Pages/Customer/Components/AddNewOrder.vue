@@ -198,11 +198,15 @@ const submitForm = () => {
             </v-card-text>
             <v-card-actions>
                 <v-btn
+                    variant="tonal"
+                    color="error"
                     text="Cancel"
                     @click="emit('close')"
                 ></v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
+                    variant="tonal"
+                    color="success"
                     text="Add Order"
                     @click="submitForm"
                 ></v-btn>

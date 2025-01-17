@@ -27,11 +27,9 @@ class TankSaleController extends Controller
     {
         $validated = $request->validated();
 
-//        dd($validated);
-
         if ($validated) {
-            $validated['requested_at'] = date('Y-m-d H:i:s');
-//            $validated['requested_at'] = now();
+//            $validated['requested_at'] = date('Y-m-d H:i:s');
+            $validated['requested_at'] = now();
 
             TankSale::query()->create($validated);
         }

@@ -28,8 +28,8 @@ class TankSaleStoreRequest extends FormRequest
             'tank_type' => ['required', 'string'],
             'tank_size' => ['required', 'string'],
             'tank_location' => ['required', 'string'],
-            'additional_requirements' => ['required', 'string'],
-            'quotes' => ['required', 'string'],
+            'additional_requirements' => ['nullable', 'string'],
+            'quotes' => ['nullable', 'string'],
         ];
     }
 }

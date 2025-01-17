@@ -64,13 +64,16 @@ const form = reactive({
 const user = computed(() => page.props.auth.user);
 
 const toggleNumber = () => {
-    numberVisibility(
+    const isRevealed = numberVisibility(
         props.prospect.id,
         { phone_viewed_at: true },
         showNumber
-    )
-    snackbar.value = true;
-    snackbarMessage.value = 'Phone number revealed!';
+    );
+
+    if (isRevealed) {
+        snackbar.value = true;
+        snackbarMessage.value = 'Phone number revealed!';
+    }
 }
 
 function handleUpdate() {
@@ -110,18 +113,11 @@ const selected_tab = 'prospect_enquiry';
                     <v-card>
                         <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
                             Details
-                            <v-tooltip text="New Order">
-                                <template v-slot:activator="{ props }">
-                                    <v-btn
-                                        density="compact"
-                                        color="green-darken-1"
-                                        icon="mdi-plus"
-                                        :="props"
-                                        @click="addOrderDialog = true"
-                                    >
-                                    </v-btn>
-                                </template>
-                            </v-tooltip>
+                                <v-btn
+                                    density="compact"
+                                    @click="addOrderDialog = true"
+                                >New Order
+                                </v-btn>
                         </v-card-title>
                         <v-card-text>
                             <v-row>
@@ -225,7 +221,8 @@ const selected_tab = 'prospect_enquiry';
 
             <v-dialog
                 v-model="addOrderDialog"
-                max-width="auto"
+                width="60vw"
+                persistent
             >
                 <AddNewOrder
                     :prospectId="prospect.id"
