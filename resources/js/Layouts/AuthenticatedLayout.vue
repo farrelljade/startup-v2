@@ -6,7 +6,6 @@ import {createCookie, readCookie, userHasPermission} from "@/helpers/helpers.js"
 const drawer = ref(true);
 const rail = ref(false);
 const impersonateUserDialog = ref(false);
-const page = usePage()
 const user = computed(() => usePage().props.auth.user)
 
 const openImpersonateDialog = () => {
@@ -23,13 +22,8 @@ const removeImpersonate = () => {
 }
 
 const logout = () => {
-    router.post('logout');
+    router.post(route('logout'));
 }
-
-const openSidebar = () => {
-    rail.value = true;
-}
-
 </script>
 
 <template>
@@ -41,10 +35,8 @@ const openSidebar = () => {
                 @click="rail = false"
             >
                 <v-list>
-                    <v-list-item v-if="!rail" prepend-icon="mdi-menu-open" @click.stop="rail = !rail">{{ user.name }}</v-list-item>
+                    <v-list-item v-if="!rail" prepend-icon="mdi-menu-open" @click.stop="rail = !rail" :title="user.name"></v-list-item>
                 </v-list>
-
-                <v-divider></v-divider>
 
                 <v-list density="compact" nav>
                     <v-list-item v-if="rail" prepend-icon="mdi-menu-close" @click.stop="rail = false"></v-list-item>
@@ -92,7 +84,7 @@ const openSidebar = () => {
                             <v-icon>mdi-logout</v-icon>
                             <span v-if="!rail">Stop Impersonating</span>
                         </v-btn>
-                        <form @submit.prevent="logout">
+                        <form @submit.prevent="logout" method="POST">
                             <v-btn
                                 :block="true"
                                 color="red"

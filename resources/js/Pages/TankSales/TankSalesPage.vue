@@ -10,7 +10,7 @@ const addTankRequestDialog = ref(false);
 
 const props = defineProps({
     prospect: {
-        type: Array,
+        type: Object,
         required: true
     }
 })
@@ -67,6 +67,13 @@ const tank_sales = 'tank_sales';
                         :headers="tankSaleHeaders"
                         :items="prospect.tank_sales"
                     >
+                        <template v-slot:item.requirement_urgent="{ item }">
+                            <v-chip
+                                :color="Number(item.requirement_urgent) === 1 ? 'error' : 'green'"
+                            >
+                                {{ Number(item.requirement_urgent) === 1 ? 'Yes' : 'No' }}
+                            </v-chip>
+                        </template>
                     </v-data-table>
                 </v-card-text>
             </v-card>
