@@ -15,7 +15,7 @@ class ProspectNotesController extends Controller
 
         $data['prospect'] = Prospect::query()
             ->where('id', $request['prospect'])
-            ->with(['user', 'notes', 'tankSales' => function($query) {
+            ->with(['tankSales', 'user', 'notes' => function($query) {
                 $query->orderBy('created_at', 'desc');
             }, 'notes.user'])
             ->first();

@@ -50,7 +50,7 @@ const prospect_notes = 'prospect_notes';
             <ProspectTabs :prospect="prospect" :selected_tab="prospect_notes"/>
 
             <v-card>
-                <v-timeline>
+                <v-timeline density="comfortable" align="start">
                     <v-timeline-item
                         v-for="note in prospect.notes"
                         :key="note.id"
@@ -58,7 +58,7 @@ const prospect_notes = 'prospect_notes';
                         icon="mdi-note-text"
                         elevation="2"
                     >
-                        <v-card elevation="2" class="pa-1" variant="tonal">
+                        <v-card elevation="2" class="pa-1" variant="text">
                             <v-card-title class="bg-green-darken-1">
                                 {{ note.user.name }} @ {{ new Date(note.created_at).toLocaleString('gb') }}
                             </v-card-title>

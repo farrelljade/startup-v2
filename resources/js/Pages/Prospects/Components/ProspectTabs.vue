@@ -12,8 +12,6 @@ const props = defineProps({
     }
 })
 
-console.log('Prospect:', props.prospect);
-
 const hasActiveTankRequests = computed(() => {
     return props.prospect?.tank_sales?.some(sale =>
         sale.status === 'Requested' || sale.status === 'In Progress'
