@@ -16,7 +16,7 @@ class ProspectEnquiryController extends Controller
         $data = [];
 
         // First find the prospect
-        $prospect = Prospect::with(['user', 'leadSource'])
+        $prospect = Prospect::with(['user', 'leadSource', 'tankSales'])
             ->find($id);
 
         if (!$prospect) {

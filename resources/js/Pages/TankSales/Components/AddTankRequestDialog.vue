@@ -32,6 +32,7 @@ const form = useForm({
     tank_location: null,
     additional_requirements: null,
     quotes: null,
+    status: 'Requested'
 })
 
 const fuelTypes = computed(() => {
