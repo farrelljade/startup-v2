@@ -14,6 +14,8 @@ class TankSaleUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'contact_name' => ['string', 'max:255'],
+            'requirement_urgent' => ['boolean'],
             'status' => ['required', 'string'],
         ];
     }

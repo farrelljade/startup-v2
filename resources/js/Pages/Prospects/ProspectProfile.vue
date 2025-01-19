@@ -10,10 +10,6 @@ const addOrderDialog = ref(false);
 const showOrderDialog = ref(false);
 const selectedOrder = ref(null);
 
-function closeDialog() {
-    addOrderDialog.value = false;
-}
-
 const page = usePage()
 
 const props = defineProps({
@@ -62,6 +58,10 @@ const form = reactive({
 })
 
 const user = computed(() => page.props.auth.user);
+
+const closeDialog = () => {
+    addOrderDialog.value = false;
+}
 
 const toggleNumber = () => {
     const isRevealed = numberVisibility(
@@ -228,7 +228,7 @@ const selected_tab = 'prospect_enquiry';
                     :prospectId="prospect.id"
                     :products="products"
                     @close="closeDialog"
-                    @order-success="handleOrderSuccess"
+                    @orderSuccess="handleOrderSuccess"
                 />
             </v-dialog>
 

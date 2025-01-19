@@ -17,7 +17,9 @@ const props = defineProps({
 const emit = defineEmits(['close']);
 
 const form = useForm({
-    status: null
+    contact_name: props.tankSale.contact_name,
+    status: props.tankSale.status,
+    requirement_urgent: Number(props.tankSale.requirement_urgent) === 1,
 })
 
 const statuses = computed(() => {
@@ -28,14 +30,13 @@ const statuses = computed(() => {
     ]
 })
 
-console.log('Prospect:', props.prospect);
-
 const updateForm = () => {
     form.patch(route('tank-sales.update', {
         prospect: props.prospect.id,
         tankSale: props.tankSale.id
     }), {
         onSuccess: () => {
+            emit('updateSuccess');
             emit('close');
         }
     });
@@ -51,6 +52,15 @@ const updateForm = () => {
             <v-card-text>
                 <v-row>
                     <v-col cols="12" sm="6">
+                        <v-text-field
+                            v-model="form.contact_name"
+                            label="Contact Name"
+                            variant="underlined"
+                            clearable
+                            :error-messages="form.errors.contact_name"
+                        />
+                    </v-col>
+                    <v-col cols="12" sm="6">
                         <v-autocomplete
                             v-model="form.status"
                             :items="statuses"
@@ -58,6 +68,15 @@ const updateForm = () => {
                             variant="underlined"
                             clearable
                             :error-messages="form.errors.status"
+                        />
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                        <v-checkbox
+                            v-model="form.requirement_urgent"
+                            label="Urgent Requirement"
+                            color="green-darken-1"
+                            hint="e.g. Is the tank leaking, damaged, or faulty?"
+                            persistent-hint
                         />
                     </v-col>
                 </v-row>

@@ -11,8 +11,6 @@ const props = defineProps({
     }
 });
 
-console.log(props.prospectsToCustomers);
-
 const currentMonth = new Date().toLocaleString('en-GB', { month: 'long' });
 </script>
 

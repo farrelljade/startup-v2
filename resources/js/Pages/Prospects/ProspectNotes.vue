@@ -5,6 +5,9 @@ import ProspectTabs from "@/Pages/Prospects/Components/ProspectTabs.vue";
 import AddProspectNote from "@/Pages/Prospects/Components/AddProspectNote.vue";
 import {ref} from "vue";
 
+const snackbar = ref(false);
+const snackbarMessage = ref('');
+
 const addNoteDialog = ref(false);
 
 const props = defineProps({
@@ -16,6 +19,11 @@ const props = defineProps({
 
 const closeDialog = () => {
     addNoteDialog.value = false;
+}
+
+const handleNoteSuccess = () => {
+    snackbarMessage.value = 'Note added successfully!';
+    snackbar.value = true;
 }
 
 const prospect_notes = 'prospect_notes';
@@ -71,7 +79,16 @@ const prospect_notes = 'prospect_notes';
             <AddProspectNote
                 :prospect="prospect"
                 @close="closeDialog"
+                @noteSuccess="handleNoteSuccess"
             />
         </v-dialog>
+
+        <v-snackbar
+            v-model="snackbar"
+            :timeout="3000"
+            color="success"
+        >
+            {{ snackbarMessage }}
+        </v-snackbar>
     </AuthenticatedLayout>
 </template>

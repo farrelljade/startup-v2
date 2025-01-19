@@ -8,6 +8,9 @@ import UpdateTankRequestDialog from "@/Pages/TankSales/Components/UpdateTankRequ
 import {ref} from "vue";
 import {userHasPermission} from "@/helpers/helpers.js";
 
+const snackbar = ref(false);
+const snackbarMessage = ref('');
+
 const addTankRequestDialog = ref(false);
 
 const selectedTankSale = ref(null);
@@ -19,6 +22,20 @@ const props = defineProps({
         required: true
     }
 })
+
+const tankSaleHeaders = [
+    { title: 'Requested By', key: 'requested_by', sortable: false },
+    { title: 'Contact Name', key: 'contact_name', sortable: false },
+    { title: 'Contact Email', key: 'contact_email', sortable: false },
+    { title: 'Phone', key: 'contact_phone', sortable: false },
+    { title: 'Urgent Requirement', key: 'requirement_urgent', sortable: false },
+    { title: 'Fuel Type', key: 'fuel_type', sortable: false },
+    { title: 'Tank Type', key: 'tank_type', sortable: false },
+    { title: 'Tank Size', key: 'tank_size', sortable: false },
+    { title: 'Status', key: 'status', sortable: false },
+    { title: 'Other Quotes', key: 'quotes', sortable: false },
+    { title: '', key: 'actions', sortable: false }
+]
 
 const openUpdateDialog = (tankSale) => {
     selectedTankSale.value = tankSale;
@@ -36,19 +53,10 @@ const closeDialog = (dialog) => {
     }
 }
 
-const tankSaleHeaders = [
-    { title: 'Requested By', key: 'requested_by', sortable: false },
-    { title: 'Contact Name', key: 'contact_name', sortable: false },
-    { title: 'Contact Email', key: 'contact_email', sortable: false },
-    { title: 'Phone', key: 'contact_phone', sortable: false },
-    { title: 'Urgent Requirement', key: 'requirement_urgent', sortable: false },
-    { title: 'Fuel Type', key: 'fuel_type', sortable: false },
-    { title: 'Tank Type', key: 'tank_type', sortable: false },
-    { title: 'Tank Size', key: 'tank_size', sortable: false },
-    { title: 'Status', key: 'status', sortable: false },
-    { title: 'Other Quotes', key: 'quotes', sortable: false },
-    { title: '', key: 'actions', sortable: false }
-]
+const handleUpdateSuccess = () => {
+    snackbarMessage.value = 'Tank request updated!';
+    snackbar.value = true;
+}
 
 const tank_sales = 'tank_sales';
 </script>
@@ -144,9 +152,18 @@ const tank_sales = 'tank_sales';
         >
             <UpdateTankRequestDialog
                 :prospect="prospect"
-                :tank-sale="selectedTankSale"
+                :tankSale="selectedTankSale"
                 @close="closeDialog('update')"
+                @updateSuccess="handleUpdateSuccess"
             />
         </v-dialog>
+
+        <v-snackbar
+            v-model="snackbar"
+            :timeout="3000"
+            color="success"
+        >
+            {{ snackbarMessage }}
+        </v-snackbar>
     </AuthenticatedLayout>
 </template>

@@ -23,6 +23,7 @@ const submit = () => {
     form.post(route('notes.store', { prospect: props.prospect.id }), {
         onSuccess: () => {
             form.reset();
+            emit('noteSuccess');
             emit('close');
         }
     });

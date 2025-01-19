@@ -211,14 +211,6 @@ const submitForm = () => {
                     @click="submitForm"
                 ></v-btn>
             </v-card-actions>
-
-            <v-snackbar
-                v-model="snackbar"
-                :timeout="3000"
-                color="success"
-            >
-                {{ snackbarMessage }}
-            </v-snackbar>
         </v-card>
     </form>
 </template>
