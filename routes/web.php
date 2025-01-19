@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/prospects/{prospect}/notes', [ProspectNotesController::class, 'store'])->name('notes.store');
     Route::get('/prospects/{prospect}/tank-sales', [TankSaleController::class, 'index'])->name('tank-sales');
     Route::post('/prospects/{prospect}/tank-sales', [TankSaleController::class, 'store'])->name('tank-sales.store');
+    Route::patch('/prospects/{prospect}/tank-sales/{tankSale}', [TankSaleController::class, 'update'])->name('tank-sales.update');
     Route::patch('/prospects/{prospect}', [ProspectEnquiryController::class, 'update'])->name('prospects.update');
     Route::patch('/users/{user}/permissions', [UserController::class, 'updatePermissions'])->name('users.permissions.update');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');

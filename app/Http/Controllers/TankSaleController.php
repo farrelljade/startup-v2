@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TankSaleStoreRequest;
+use App\Http\Requests\TankSaleUpdateRequest;
 use App\Models\Prospect;
 use App\Models\TankSale;
 use Illuminate\Http\Request;
@@ -29,5 +30,18 @@ class TankSaleController extends Controller
 
             TankSale::query()->create($validated);
         }
+    }
+
+    public function update(TankSaleUpdateRequest $request, string $prospectId, string $tankSaleId)
+    {
+        $validated = $request->validated();
+
+        $tankSale = TankSale::query()
+            ->where('prospect_id', $prospectId)
+            ->findOrFail($tankSaleId);
+
+        $tankSale->update($validated);
+
+        return back();
     }
 }

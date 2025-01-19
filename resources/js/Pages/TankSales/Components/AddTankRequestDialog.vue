@@ -197,7 +197,7 @@ const submit = () => {
                     color="error"
                     text="Cancel"
                     @click="emit('close')"
-                ></v-btn>
+                />
                 <v-spacer/>
                 <v-btn
                     variant="tonal"
@@ -205,7 +205,7 @@ const submit = () => {
                     text="Submit Request"
                     @click="submit"
                     :loading="form.processing"
-                ></v-btn>
+                />
             </v-card-actions>
         </v-card>
     </form>

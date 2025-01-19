@@ -1,12 +1,17 @@
 <script setup>
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from '@inertiajs/vue3';
+import {Head, usePage} from '@inertiajs/vue3';
 import ProspectTabs from "@/Pages/Prospects/Components/ProspectTabs.vue";
 import AddTankRequestDialog from "@/Pages/TankSales/Components/AddTankRequestDialog.vue";
+import UpdateTankRequestDialog from "@/Pages/TankSales/Components/UpdateTankRequestDialog.vue";
 import {ref} from "vue";
+import {userHasPermission} from "@/helpers/helpers.js";
 
 const addTankRequestDialog = ref(false);
+
+const selectedTankSale = ref(null);
+const updateTankRequestDialog = ref(false);
 
 const props = defineProps({
     prospect: {
@@ -15,8 +20,20 @@ const props = defineProps({
     }
 })
 
-const closeDialog = () => {
-    addTankRequestDialog.value = false;
+const openUpdateDialog = (tankSale) => {
+    selectedTankSale.value = tankSale;
+    updateTankRequestDialog.value = true;
+}
+
+const closeDialog = (dialog) => {
+    switch(dialog) {
+        case 'add':
+            addTankRequestDialog.value = false;
+            break;
+        case 'update':
+            updateTankRequestDialog.value = false;
+            break;
+    }
 }
 
 const tankSaleHeaders = [
@@ -30,7 +47,7 @@ const tankSaleHeaders = [
     { title: 'Tank Size', key: 'tank_size', sortable: false },
     { title: 'Status', key: 'status', sortable: false },
     { title: 'Other Quotes', key: 'quotes', sortable: false },
-    { title: 'Actions', key: 'actions', sortable: false }
+    { title: '', key: 'actions', sortable: false }
 ]
 
 const tank_sales = 'tank_sales';
@@ -74,6 +91,36 @@ const tank_sales = 'tank_sales';
                                 {{ Number(item.requirement_urgent) === 1 ? 'Yes' : 'No' }}
                             </v-chip>
                         </template>
+                        <template v-if="userHasPermission(usePage().props.auth.user, 'Update Tank Request')" v-slot:item.actions="{ item }">
+                            <v-row>
+                                <v-tooltip text="Update Request">
+                                    <template v-slot:activator="{ props }">
+                                        <v-col cols="3">
+                                            <v-btn
+                                                variant="text"
+                                                small
+                                                color="yellow-darken-1"
+                                                icon="mdi-pencil"
+                                                :="props" @click="openUpdateDialog(item)"
+                                            ></v-btn>
+                                        </v-col>
+                                    </template>
+                                </v-tooltip>
+                                <v-tooltip text="Trash Request">
+                                    <template v-slot:activator="{ props }">
+                                        <v-col cols="3">
+                                            <v-btn
+                                                variant="text"
+                                                small
+                                                color="red"
+                                                icon="mdi-delete"
+                                                :="props"
+                                            ></v-btn>
+                                        </v-col>
+                                    </template>
+                                </v-tooltip>
+                            </v-row>
+                        </template>
                     </v-data-table>
                 </v-card-text>
             </v-card>
@@ -86,7 +133,19 @@ const tank_sales = 'tank_sales';
         >
             <AddTankRequestDialog
                 :prospect="prospect"
-                @close="closeDialog"
+                @close="closeDialog('add')"
+            />
+        </v-dialog>
+
+        <v-dialog
+            v-model="updateTankRequestDialog"
+            width="50vw"
+            persistent
+        >
+            <UpdateTankRequestDialog
+                :prospect="prospect"
+                :tank-sale="selectedTankSale"
+                @close="closeDialog('update')"
             />
         </v-dialog>
     </AuthenticatedLayout>
