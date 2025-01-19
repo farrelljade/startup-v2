@@ -184,6 +184,7 @@ const submit = () => {
                             v-model="form.quotes"
                             label="Other Quotes"
                             variant="underlined"
+                            prefix="£"
                             clearable
                             :error-messages="form.errors.quotes"
                         />

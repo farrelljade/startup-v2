@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\Prospect;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +21,19 @@ class DashboardController extends Controller
         } else {
             $data['user'] = $user ?? Auth::user();
         }
+
+        $data['userProfitThisMonth'] = Order::query()
+            ->whereHas('customer', function ($query) use ($data) {
+                $query->where('user_id', $data['user']->id);
+            })
+            ->whereMonth('created_at', now()->month)
+            ->sum('total_profit');
+        $data['prospectsToCustomers'] = Prospect::query()
+            ->join('customers', 'prospects.id', '=', 'customers.prospect_id')
+            ->where('prospects.user_id', $data['user']->id)
+            ->where('prospects.status', 'customer')
+            ->whereMonth('customers.created_at', now()->month)
+            ->count();
 
         $data['prospects'] = $data['user']->prospects()
             ->where('status', 'prospect')

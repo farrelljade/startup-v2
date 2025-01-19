@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, router, usePage} from '@inertiajs/vue3';
 import {computed, ref} from 'vue';
 import CustomerList from "@/Pages/Customer/Components/CustomerList.vue";
+import SheetInformation from "@/Pages/User/Components/SheetInformation.vue";
 
 const tab = ref('prospects');
 
@@ -12,6 +13,14 @@ const props = defineProps({
         required: true
     },
     customers: {
+        type: Array,
+        required: true
+    },
+    userProfitThisMonth: {
+        type: Number,
+        required: true
+    },
+    prospectsToCustomers: {
         type: Array,
         required: true
     }
@@ -32,11 +41,16 @@ const user = computed(() => usePage().props.auth.user);
     <AuthenticatedLayout>
         <Head title="Home" />
         <v-container fluid>
-            <v-card class="mb-3 pa-2">
-                <v-card-title class="bg-success d-flex justify-space-between align-center">
-                    {{ user.name }}
-                </v-card-title>
-            </v-card>
+            <v-row>
+                <v-col cols="12">
+                    <v-card>
+                        <SheetInformation
+                            :userProfitThisMonth="userProfitThisMonth"
+                            :prospectsToCustomers="prospectsToCustomers"
+                        />
+                    </v-card>
+                </v-col>
+            </v-row>
 
             <v-row>
                 <v-col cols="12" md="6">

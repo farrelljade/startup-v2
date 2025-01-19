@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.dashboard-info {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+}
+
+.top-row,
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.center-row {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.name,
+.information,
+.bottom-left,
+.bottom-right {
+    font-size: 14px;
+    padding: 2px;
+}

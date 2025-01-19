@@ -28,8 +28,8 @@ const tankSaleHeaders = [
     { title: 'Fuel Type', key: 'fuel_type', sortable: false },
     { title: 'Tank Type', key: 'tank_type', sortable: false },
     { title: 'Tank Size', key: 'tank_size', sortable: false },
-    { title: 'Other Quotes', key: 'quotes', sortable: false },
     { title: 'Status', key: 'status', sortable: false },
+    { title: 'Other Quotes', key: 'quotes', sortable: false },
     { title: 'Actions', key: 'actions', sortable: false }
 ]
 
