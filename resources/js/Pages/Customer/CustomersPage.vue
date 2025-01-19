@@ -56,9 +56,7 @@ const customersHeaders = [
                                 variant="underlined"
                                 label="Search Company"
                                 clearable
-                                :filter="(item, query, itemText) => {
-                                    return itemText.toLowerCase().includes(query.toLowerCase())
-                                }"
+
                             />
                         </v-col>
                     </v-row>

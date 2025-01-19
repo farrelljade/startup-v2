@@ -54,7 +54,7 @@ const user = computed(() => usePage().props.auth.user);
 
             <v-row>
                 <v-col cols="12" md="6">
-                    <v-card>
+                    <v-card class="pa-1">
                         <v-tabs
                             v-model="tab"
                             bg-color="success"

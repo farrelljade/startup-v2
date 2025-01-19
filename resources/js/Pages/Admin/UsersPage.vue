@@ -19,7 +19,7 @@ const usersHeaders = [
         <Head title="Users" />
 
         <v-container fluid>
-            <v-card class="mb-3 pa-3">
+            <v-card class="mb-3 pa-1">
                 <v-card-title class="bg-success d-flex justify-space-between align-center">
                     Users Page
                 </v-card-title>

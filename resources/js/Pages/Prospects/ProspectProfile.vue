@@ -100,7 +100,7 @@ const selected_tab = 'prospect_enquiry';
     <AuthenticatedLayout>
         <Head title="Profile" />
         <v-container fluid>
-            <v-card class="mb-3 pa-2">
+            <v-card class="mb-3 pa-1">
                 <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
                     {{ prospect.company_name }}
                 </v-card-title>
@@ -110,7 +110,7 @@ const selected_tab = 'prospect_enquiry';
 
             <v-row>
                 <v-col cols="12" md="6">
-                    <v-card>
+                    <v-card class="pa-1">
                         <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
                             Details
                                 <v-btn
@@ -187,8 +187,8 @@ const selected_tab = 'prospect_enquiry';
                 </v-col>
 
                 <v-col cols="12" md="6">
-                    <v-card>
-                        <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
+                    <v-card class="pa-1">
+                        <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center mb-2">
                             Orders
                         </v-card-title>
                         <v-card-text>
