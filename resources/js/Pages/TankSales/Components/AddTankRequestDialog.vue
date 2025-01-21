@@ -60,7 +60,7 @@ const tankLocation = computed(() => {
 })
 
 const submit = () => {
-    form.post(route('tank-sales.store', { prospect: props.prospect.id}), {
+    form.post(route('tank-sales.store'), {
         onSuccess: () => {
             form.reset();
             emit('close');
@@ -71,7 +71,7 @@ const submit = () => {
 
 <template>
     <form @submit.prevent="submit">
-        <v-card>
+        <v-card class="pa-1">
             <v-card-title class="bg-green-darken-1">
                 Add Tank Request
             </v-card-title>

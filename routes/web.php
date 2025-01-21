@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
     Route::get('/prospects', [ProspectController::class, 'index'])->name('prospects.index');
+    Route::post('/prospects', [ProspectController::class, 'store'])->name('prospects.store');
     Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::get('/prospects/{prospect}', [ProspectEnquiryController::class, 'index'])->name('company.profile');
     Route::get('/prospects/{prospect}/notes', [ProspectNotesController::class, 'index'])->name('prospect.notes');
