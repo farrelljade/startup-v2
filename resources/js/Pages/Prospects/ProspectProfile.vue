@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, usePage} from '@inertiajs/vue3';
 import ProspectTabs from "@/Pages/Prospects/Components/ProspectTabs.vue";
 import {computed, reactive, ref} from "vue";
-import {numberVisibility, updateProspect, userHasPermission} from "@/helpers/helpers.js";
+import {logPhoneViewedAt, updateRecord, userHasPermission} from "@/helpers/helpers.js";
 import AddNewOrder from "@/Pages/Customer/Components/AddNewOrder.vue";
 
 const addOrderDialog = ref(false);
@@ -64,23 +64,14 @@ const closeDialog = () => {
 }
 
 const toggleNumber = () => {
-    const isRevealed = numberVisibility(
+    showNumber.value = !showNumber.value;
+
+    logPhoneViewedAt(
         props.prospect.id,
-        { phone_viewed_at: true },
-        showNumber
-    );
-
-    if (isRevealed) {
-        snackbar.value = true;
-        snackbarMessage.value = 'Phone number revealed!';
-    }
-}
-
-function handleUpdate() {
-    updateProspect(props.prospect.id, form, () => {
-        snackbar.value = true;
-        snackbarMessage.value = 'Updated successfully!';
-    });
+        showNumber.value,
+        'prospects.update',
+        'phone_viewed_at'
+    )
 }
 
 function handleOrderSuccess() {
@@ -111,13 +102,8 @@ const selected_tab = 'prospect_enquiry';
             <v-row>
                 <v-col cols="12" md="6">
                     <v-card class="pa-1">
-                        <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
+                        <v-card-title class="bg-green-lighten-1 d-flex justify-space-between align-center">
                             Details
-                                <v-btn
-                                    density="compact"
-                                    @click="addOrderDialog = true"
-                                >New Order
-                                </v-btn>
                         </v-card-title>
                         <v-card-text>
                             <v-row>
@@ -177,7 +163,7 @@ const selected_tab = 'prospect_enquiry';
                                         :append-icon="form.phone ? (showNumber ? 'mdi-eye' : 'mdi-eye-off') : ''"
                                         @click:append="toggleNumber"
                                         label="Phone"
-                                        @change="handleUpdate"
+                                        @change="updateRecord(route('prospects.update', prospect.id), 'phone', form.phone)"
                                         :readonly="!userHasPermission(user, 'Update Prospect')"
                                     />
                                 </v-col>
@@ -188,8 +174,15 @@ const selected_tab = 'prospect_enquiry';
 
                 <v-col cols="12" md="6">
                     <v-card class="pa-1">
-                        <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center mb-2">
+                        <v-card-title class="bg-green-lighten-1 d-flex justify-space-between align-center mb-2">
                             Orders
+
+                            <v-btn
+                                density="compact"
+                                @click="addOrderDialog = true"
+                            >
+                                New Order
+                            </v-btn>
                         </v-card-title>
                         <v-card-text>
                             <v-data-table

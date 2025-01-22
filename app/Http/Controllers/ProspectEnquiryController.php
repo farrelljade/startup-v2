@@ -47,7 +47,7 @@ class ProspectEnquiryController extends Controller
     public function update(Request $request, Prospect $prospect)
     {
         $validated = $request->validate([
-            'phone' => ['nullable', 'string'],
+            'phone' => ['nullable'],
             'phone_viewed_at' => ['nullable', 'date'],
         ]);
 
@@ -57,6 +57,6 @@ class ProspectEnquiryController extends Controller
 
         $prospect->update($validated);
 
-        return back();
+        return response()->json(['message' => 'Prospect updated successfully!']);
     }
 }

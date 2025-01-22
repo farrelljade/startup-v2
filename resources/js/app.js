@@ -15,6 +15,9 @@ import '@mdi/font/css/materialdesignicons.css'
 import { mdi } from 'vuetify/iconsets/mdi'
 import { aliases } from 'vuetify/iconsets/mdi'
 
+import Toast, {POSITION} from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
 const vuetify = createVuetify({
     icons: {
         defaultSet: 'mdi',
@@ -41,6 +44,10 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(vuetify)
+            .use(Toast, {
+                position: POSITION.BOTTOM_RIGHT,
+                timeout: 3000
+            })
             .mount(el);
     },
     progress: {

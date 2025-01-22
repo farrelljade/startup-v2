@@ -1,4 +1,25 @@
 import { router } from '@inertiajs/vue3';
+import {useToast} from "vue-toastification";
+
+export function sendToastNotification(type, message = '') {
+    let toast = useToast();
+
+    if (type === 'success') {
+        toast.success(message);
+    } else if (type === 'error') {
+        toast.error(message);
+    } else {
+        toast.info(message);
+    }
+}
+
+export function findErrorInResponse(error) {
+    return error.response?.data?.error
+        || error.response?.data?.message
+        || error.response?.message
+        || error.response?.error
+        || 'An error has occurred. Please contact IT Development.';
+}
 
 export function updateProspect(prospectId, data, onSuccess) {
     return router.patch(
@@ -32,6 +53,23 @@ export function updateUser(userId, data, onSuccess) {
             }
         }
     );
+}
+
+export function updateRecord(route, key, value, reload = false, notification = true, notificationMessage = null) {
+    axios.patch(route,
+        {[key]: value}
+    ).then((result) => {
+        if (notification) {
+            let type = result.data.type ? result.data.type : 'success';
+            sendToastNotification(type, notificationMessage ? notificationMessage : result.data.message)
+        }
+
+        if (reload) {
+            window.location.reload();
+        }
+    }).catch(error => {
+        sendToastNotification('error', findErrorInResponse(error))
+    });
 }
 
 export function userHasPermission(user, permissionName) {
@@ -90,21 +128,16 @@ export function readCookie(name) {
     return null;
 }
 
-export function numberVisibility(prospectId, data, showNumber) {
-    const newValue = !showNumber.value;
-    showNumber.value = newValue;
+export function logPhoneViewedAt(id, showState, routeName, columnName, notificationMessage = 'Request to view number logged!') {
 
-    if (newValue) {
-        const updatedData = {
-            ...data,
-            phone_viewed_at: new Date().toISOString()
-        };
-
-        updateProspect(
-            prospectId,
-            updatedData
-        )
+    if (showState) {
+        updateRecord(
+            route(routeName, Array.isArray(id) ? id : [id]),
+            columnName,
+            new Date().toISOString(),
+            false,
+            true,
+            notificationMessage
+        );
     }
-
-    return newValue;
 }
