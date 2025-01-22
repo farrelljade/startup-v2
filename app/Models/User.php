@@ -4,14 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends Authenticatable
+class User extends Authenticatable Implements Auditable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, \OwenIt\Auditing\Auditable;
 
     protected $with = ['permissions'];
 
@@ -59,8 +61,15 @@ class User extends Authenticatable
         return $this->hasMany(Customer::class);
     }
 
-    public function permissions()
+    public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class);
+    }
+
+    public function targets()
+    {
+        return $this->belongsToMany(Target::class, 'user_targets')
+            ->withPivot('target_value', 'current_value', 'start_date', 'end_date', 'achieved')
+            ->withTimestamps();
     }
 }

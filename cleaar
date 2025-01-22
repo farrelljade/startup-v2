@@ -1,0 +1,37 @@
+[33maf85ba4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Add address and contact model/DB tables.
+[33m0231911[m Fix alignment on notes timeline.
+[33m710ed49[m Add v-badge notification when there are tank requests to be actioned.
+[33mb08ff96[m Fix padding on the v-cards and tables throughout the app.
+[33m320924d[m Add snackbar message to notes and tank requests.
+[33m4041aa9[m Add ability to update a tank request after one has been created.
+[33ma8e2163[m Add sheet information to the user dashboard page.
+[33m636f500[m Update the tank requests page. Fix the 404 error when trying to logout.
+[33m10f4759[m Change 'instanceof' to 'findOrFail' in TankSalesController.
+[33mb2a2ab1[m Add tank type 'other' column to tank sale table and form.
+[33m62c1d6f[m Change additional requirements and quotes columns in tank sales table to be nullable.
+[33m19943f1[m Add ability to request a fuel tank.
+[33m186e389[m Add tank sale request page.
+[33m347d811[m update sidebar
+[33meb57def[m Update providers.
+[33m6236b72[m Install laravel auditing package.
+[33m72959d7[m Add edit user permission. Users with the permission can edit users.
+[33mf3e5318[m Add ability for admin users to impersonate other users.
+[33mdd862da[m Add ability to search customers on the customers page.
+[33mde23ad7[m Add orders to customers profile page.
+[33m452e088[m Add a prospect and customer list to the user dashboard page.
+[33m905da2f[m When prospects create an order for the first time, they are changed into a customer.
+[33m3153ff1[m Make a start on converting prospects into customers.
+[33m083b2b0[m Add custom command to clear caches/routes.
+[33m8cd076e[m Update prospect page. Added some requirements.
+[33m69c87e8[m Add permissions functions. system admin users have all permissions.
+[33m321e8bc[m Add permissions.
+[33m012c618[m Update user profile page.
+[33m2a6d7a3[m Add a js helper file for reusable functions. Add ability to
+[33m9f14907[m Add style to notes page.
+[33m2a25c32[m Add ability to add notes to a prospect.
+[33m4084c15[m Add prospect tabs with ability to navigate through the tabs.
+[33mf1e3d1f[m Add prospect controller and frontend page.
+[33m9996659[m Create and seed data to use.
+[33m3186e3d[m setup structure of enterprise app
+[33md7bcf14[m Install Breeze
+[33m74a8109[m Set up a fresh Laravel app
