@@ -9,6 +9,7 @@ use App\Http\Controllers\ProspectEnquiryController;
 use App\Http\Controllers\ProspectNotesController;
 use App\Http\Controllers\TankSaleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserTargetController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -43,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::post('/prospects/{prospect}/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/user-targets', [UserTargetController::class, 'index'])->name('user-targets.index');
 });
 
 require __DIR__.'/auth.php';

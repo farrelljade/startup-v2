@@ -58,6 +58,7 @@ const logout = () => {
                         </template>
 
                         <v-list-item :href="route('users.index')" title="Users Page" value="users"></v-list-item>
+                        <v-list-item :href="route('user-targets.index')" title="User Targets" value="user_targets"></v-list-item>
                     </v-list-group>
                 </v-list>
 
