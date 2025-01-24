@@ -2,6 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head, useForm} from '@inertiajs/vue3';
 import {ref} from "vue";
+import {updateRecord} from "@/helpers/helpers.js";
 
 const updateTargetDialog = ref(false);
 
@@ -27,7 +28,15 @@ const userTargets = ref(props.users.map(user => ({
     rejuves: user.targets[1]?.target_value || '',
     profit: user.targets[2]?.target_value || '',
     iho: user.targets[3]?.target_value || '',
-    lubricants: user.targets[4]?.target_value || ''
+    lubricants: user.targets[4]?.target_value || '',
+
+    originalValues: {
+        prospects: user.targets[0]?.target_value || '',
+        rejuves: user.targets[1]?.target_value || '',
+        profit: user.targets[2]?.target_value || '',
+        iho: user.targets[3]?.target_value || '',
+        lubricants: user.targets[4]?.target_value || ''
+    }
 })));
 
 const form = useForm({
@@ -37,6 +46,25 @@ const form = useForm({
 const openUpdateTargetDialog = () => {
     updateTargetDialog.value = true;
 }
+
+const updateTargets = () => {
+    props.users.forEach(user => {
+        const userTarget = userTargets.value.find(t => t.id === user.id);
+
+        targetTypes.forEach((type, index) => {
+            if (user.targets[index] && userTarget[type.name] !== userTarget.originalValues[type.name]) {
+                updateRecord(
+                    route('user-targets.update', { userTarget: user.targets[index].id }),
+                    'target_value',
+                    userTarget[type.name],
+                    false,
+                    true
+                );
+            }
+        });
+    });
+    updateTargetDialog.value = false;
+};
 
 const submit = () => {
     const startDate = new Date().toISOString().split('T')[0];
@@ -171,6 +199,8 @@ const submit = () => {
                     <v-btn
                         color="info"
                         variant="tonal"
+                        @click="updateTargets"
+                        :loading="form.processing"
                     >
                         Update Targets
                     </v-btn>

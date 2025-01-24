@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserTargetStoreRequest;
+use App\Http\Requests\UserTargetUpdateRequest;
 use App\Models\Target;
 use App\Models\User;
 use App\Models\UserTarget;
@@ -41,6 +42,17 @@ class UserTargetController extends Controller
                 ]);
             }
         });
+
+        return response()->json(['message' => 'Targets updated!']);
+    }
+
+    public function update(UserTargetUpdateRequest $request, string $userTargetId)
+    {
+        $validated = $request->validated();
+
+        $userTarget = UserTarget::findOrFail($userTargetId);
+
+        $userTarget->update(['target_value' => $validated['target_value']]);
 
         return response()->json(['message' => 'Targets updated!']);
     }
