@@ -8,6 +8,10 @@ const props = defineProps({
     prospectsToCustomers: {
         type: Array,
         required: true
+    },
+    userTargets: {
+        type: Array,
+        required: true
     }
 });
 
@@ -31,6 +35,10 @@ const currentMonth = new Date().toLocaleString('en-GB', { month: 'long' });
                 <div class="center-row">
                     £{{ Number(userProfitThisMonth).toLocaleString(undefined, {minimumFractionDigits: 2}) }}
                 </div>
+
+                <div class="bottom-left">
+                    <div class="name">Target: £{{ userTargets.find(t => t.target?.type === 'profit')?.target_value || 0 }}</div>
+                </div>
             </v-sheet>
         </v-col>
         <v-col cols="12" sm="3" class="cursor-pointer">
@@ -47,6 +55,10 @@ const currentMonth = new Date().toLocaleString('en-GB', { month: 'long' });
 
                 <div class="center-row">
                     {{ prospectsToCustomers }}
+                </div>
+
+                <div class="bottom-right">
+                    <div class="name">Target: {{ userTargets.find(t => t.target?.type === 'prospects')?.target_value || 0 }}</div>
                 </div>
             </v-sheet>
         </v-col>

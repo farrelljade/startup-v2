@@ -23,6 +23,10 @@ const props = defineProps({
     prospectsToCustomers: {
         type: Array,
         required: true
+    },
+    userTargets: {
+        type: Array,
+        required: true
     }
 });
 
@@ -47,6 +51,7 @@ const user = computed(() => usePage().props.auth.user);
                         <SheetInformation
                             :userProfitThisMonth="userProfitThisMonth"
                             :prospectsToCustomers="prospectsToCustomers"
+                            :userTargets="userTargets"
                         />
                     </v-card>
                 </v-col>

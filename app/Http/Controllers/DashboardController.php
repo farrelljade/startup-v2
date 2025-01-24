@@ -34,7 +34,14 @@ class DashboardController extends Controller
             ->where('prospects.status', 'customer')
             ->whereMonth('customers.created_at', now()->month)
             ->count();
-
+        $data['userTargets'] = User::query()
+            ->with(['targets' => function($query) {
+                $query->where('start_date', '<=', now())
+                    ->where('end_date', '>=', now())
+                    ->with('target');
+            }])
+            ->find($data['user']->id)
+            ->targets;
         $data['prospects'] = $data['user']->prospects()
             ->where('status', 'prospect')
             ->get();
