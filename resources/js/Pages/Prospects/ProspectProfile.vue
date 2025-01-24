@@ -174,7 +174,7 @@ const selected_tab = 'prospect_enquiry';
 
                 <v-col cols="12" md="6">
                     <v-card class="pa-1">
-                        <v-card-title class="bg-green-lighten-1 d-flex justify-space-between align-center mb-2">
+                        <v-card-title class="bg-green-lighten-1 d-flex justify-space-between align-center mb-4">
                             Orders
 
                             <v-btn

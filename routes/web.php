@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/prospects/{prospect}/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
     Route::get('/user-targets', [UserTargetController::class, 'index'])->name('user-targets.index');
+    Route::post('/user-targets', [UserTargetController::class, 'store'])->name('user-targets.store');
 });
 
 require __DIR__.'/auth.php';

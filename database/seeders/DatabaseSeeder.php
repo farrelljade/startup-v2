@@ -16,6 +16,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 //        Prospect::factory(100)->create();
-        Order::factory(500)->create();
+//        Order::factory(500)->create();
+
+        $this->call([
+            TargetSeeder::class
+        ]);
     }
 }

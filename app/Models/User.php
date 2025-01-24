@@ -66,10 +66,8 @@ class User extends Authenticatable Implements Auditable
         return $this->belongsToMany(Permission::class);
     }
 
-    public function targets()
+    public function targets(): HasMany
     {
-        return $this->belongsToMany(Target::class, 'user_targets')
-            ->withPivot('target_value', 'current_value', 'start_date', 'end_date', 'achieved')
-            ->withTimestamps();
+        return $this->hasMany(UserTarget::class);
     }
 }
