@@ -63,8 +63,14 @@ const submit = () => {
 <template>
     <form @submit.prevent="submit">
         <v-card class="pa-1">
-            <v-card-title class="bg-green-darken-1">
+            <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
                 Add New Prospect
+
+                <v-btn
+                    variant="text"
+                    icon="mdi-close-circle"
+                    @click="emit('close')"
+                />
             </v-card-title>
             <v-card-text>
                 <v-row>

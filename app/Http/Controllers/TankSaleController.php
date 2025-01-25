@@ -42,6 +42,6 @@ class TankSaleController extends Controller
 
         $tankSale->update($validated);
 
-        return back();
+        return response()->json(['message' => 'Tank request updated!']);
     }
 }

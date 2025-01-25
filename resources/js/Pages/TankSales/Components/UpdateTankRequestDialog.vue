@@ -45,9 +45,15 @@ const updateForm = () => {
 
 <template>
     <form @submit.prevent="updateForm">
-        <v-card>
-            <v-card-title class="bg-green-darken-1">
+        <v-card class="pa-1">
+            <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
                 Update Tank Request
+
+                <v-btn
+                    variant="text"
+                    icon="mdi-close-circle"
+                    @click="emit('close')"
+                />
             </v-card-title>
             <v-card-text>
                 <v-row>

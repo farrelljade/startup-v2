@@ -61,7 +61,7 @@ function handlePermissionChange(permissionName) {
 
             <v-row>
                 <v-col cols="12" md="6">
-                    <v-card>
+                    <v-card class="pa-1">
                         <v-card-title class="bg-success d-flex justify-space-between align-center">
                             First Card
                         </v-card-title>
@@ -88,7 +88,7 @@ function handlePermissionChange(permissionName) {
                 </v-col>
 
                 <v-col cols="12" md="6">
-                    <v-card>
+                    <v-card class="pa-1">
                         <v-card-title class="bg-success d-flex justify-space-between align-center">Permissions</v-card-title>
                         <v-card-text>
                             <v-row>
