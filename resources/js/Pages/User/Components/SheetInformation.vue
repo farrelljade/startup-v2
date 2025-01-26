@@ -37,11 +37,16 @@ const currentMonth = new Date().toLocaleString('en-GB', { month: 'long' });
                 </div>
 
                 <div class="bottom-row">
-                    <div class=" bottom-left name">Target: {{ userTargets.find(t => t.target?.type === 'profit')?.target_value || 0 }}</div>
-                    <div v-if="userProfitThisMonth >= (userTargets.find(t => t.target?.type === 'profit')?.target_value || 0)"
-                         class="bottom-right font-bold">
-                        Target Hit!
-                    </div>
+                    <div class="bottom-left name">Target: {{ userTargets.find(t => t.target?.type === 'profit')?.target_value || 0 }}</div>
+                    <v-chip
+                        v-if="userProfitThisMonth >= (userTargets.find(t => t.target?.type === 'profit')?.target_value || 0)"
+                        color="success"
+                        density="compact"
+                        variant="elevated"
+                        class="font-weight-bold"
+                    >
+                        Hit!
+                    </v-chip>
                 </div>
             </v-sheet>
         </v-col>
@@ -63,10 +68,15 @@ const currentMonth = new Date().toLocaleString('en-GB', { month: 'long' });
 
                 <div class="bottom-row">
                     <div class=" bottom-left name">Target: {{ userTargets.find(t => t.target?.type === 'prospects')?.target_value || 0 }}</div>
-                    <div v-if="prospectsToCustomers >= (userTargets.find(t => t.target?.type === 'prospects')?.target_value || 0)"
-                         class="bottom-right font-bold">
-                        Target Hit!
-                    </div>
+                    <v-chip
+                        v-if="prospectsToCustomers >= (userTargets.find(t => t.target?.type === 'prospects')?.target_value || 0)"
+                        color="success"
+                        density="compact"
+                        variant="elevated"
+                        class="font-weight-bold"
+                    >
+                        Hit!
+                    </v-chip>
                 </div>
             </v-sheet>
         </v-col>
