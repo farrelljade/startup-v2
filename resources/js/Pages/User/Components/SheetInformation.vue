@@ -36,8 +36,12 @@ const currentMonth = new Date().toLocaleString('en-GB', { month: 'long' });
                     £{{ Number(userProfitThisMonth).toLocaleString(undefined, {minimumFractionDigits: 2}) }}
                 </div>
 
-                <div class="bottom-left">
-                    <div class="name">Target: £{{ userTargets.find(t => t.target?.type === 'profit')?.target_value || 0 }}</div>
+                <div class="bottom-row">
+                    <div class=" bottom-left name">Target: {{ userTargets.find(t => t.target?.type === 'profit')?.target_value || 0 }}</div>
+                    <div v-if="userProfitThisMonth >= (userTargets.find(t => t.target?.type === 'profit')?.target_value || 0)"
+                         class="bottom-right font-bold">
+                        Target Hit!
+                    </div>
                 </div>
             </v-sheet>
         </v-col>
@@ -57,8 +61,12 @@ const currentMonth = new Date().toLocaleString('en-GB', { month: 'long' });
                     {{ prospectsToCustomers }}
                 </div>
 
-                <div class="bottom-right">
-                    <div class="name">Target: {{ userTargets.find(t => t.target?.type === 'prospects')?.target_value || 0 }}</div>
+                <div class="bottom-row">
+                    <div class=" bottom-left name">Target: {{ userTargets.find(t => t.target?.type === 'prospects')?.target_value || 0 }}</div>
+                    <div v-if="prospectsToCustomers >= (userTargets.find(t => t.target?.type === 'prospects')?.target_value || 0)"
+                         class="bottom-right font-bold">
+                        Target Hit!
+                    </div>
                 </div>
             </v-sheet>
         </v-col>

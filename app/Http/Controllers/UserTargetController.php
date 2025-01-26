@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserTargetStoreRequest;
 use App\Http\Requests\UserTargetUpdateRequest;
+use App\Models\Order;
 use App\Models\Target;
 use App\Models\User;
 use App\Models\UserTarget;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -26,7 +28,7 @@ class UserTargetController extends Controller
         return Inertia::render('Admin/UserTargets', $data);
     }
 
-    public function store(UserTargetStoreRequest $request)
+    public function store(UserTargetStoreRequest $request): JsonResponse
     {
         DB::transaction(function () use ($request) {
             foreach ($request->validated()['targets'] as $target) {
@@ -46,14 +48,27 @@ class UserTargetController extends Controller
         return response()->json(['message' => 'Targets updated!']);
     }
 
-    public function update(UserTargetUpdateRequest $request, string $userTargetId)
+    public function update(UserTargetUpdateRequest $request, string $userTargetId): JsonResponse
     {
         $validated = $request->validated();
 
         $userTarget = UserTarget::findOrFail($userTargetId);
 
-        $userTarget->update(['target_value' => $validated['target_value']]);
+        if ($userTarget->target->type === 'profit') {
+            $currentProfit = Order::query()
+                ->whereHas('customer', function($query) use ($userTarget) {
+                    $query->where('user_id', $userTarget->user_id);
+                })
+                ->whereMonth('created_at', now()->month)
+                ->sum('total_profit');
 
-        return response()->json(['message' => 'Targets updated!']);
+            $userTarget->current_value = $currentProfit;
+        }
+
+        $userTarget->target_value = $validated['target_value'];
+        $userTarget->achieved = $userTarget->current_value >= $validated['target_value'];
+        $userTarget->save();
+
+        return response()->json(['message' => 'Target updated!']);
     }
 }
