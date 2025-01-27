@@ -1,6 +1,13 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {Head, Link, router} from '@inertiajs/vue3';
+import AddNewUserDialog from '@/Pages/Admin/Components/AddNewUserDialog.vue';
+import {Head, router} from '@inertiajs/vue3';
+import {ref} from "vue";
+
+const snackbar = ref(false);
+const snackbarMessage = ref('');
+
+const addNewUserDialog = ref(false);
 
 defineProps({
     users: Object
@@ -12,6 +19,19 @@ const usersHeaders = [
     { title: 'Action', key: 'actions', sortable: false}
 ]
 
+const closeDialog = () => {
+    addNewUserDialog.value = false;
+}
+
+const openAddNewUserDialog = () => {
+    addNewUserDialog.value = true;
+}
+
+const handleSuccess = () => {
+    snackbar.value = true;
+    snackbarMessage.value = 'User successfully created'
+}
+
 </script>
 
 <template>
@@ -22,6 +42,14 @@ const usersHeaders = [
             <v-card class="mb-3 pa-1">
                 <v-card-title class="bg-success d-flex justify-space-between align-center">
                     Users Page
+
+                    <v-btn
+                        size="small"
+                        variant="elevated"
+                        @click="openAddNewUserDialog"
+                    >
+                        Add User
+                    </v-btn>
                 </v-card-title>
             </v-card>
 
@@ -43,5 +71,16 @@ const usersHeaders = [
                 </v-card-text>
             </v-card>
         </v-container>
+
+        <v-dialog
+            v-model="addNewUserDialog"
+            width="60vw"
+            persistent
+        >
+            <AddNewUserDialog
+                @close="closeDialog"
+                @success="handleSuccess"
+            />
+        </v-dialog>
     </AuthenticatedLayout>
 </template>

@@ -37,7 +37,7 @@ const currentMonth = new Date().toLocaleString('en-GB', { month: 'long' });
                 </div>
 
                 <div class="bottom-row">
-                    <div class="bottom-left name">Target: {{ userTargets.find(t => t.target?.type === 'profit')?.target_value || 0 }}</div>
+                    <div class="bottom-left name">Target: {{ (userTargets.find(t => t.target?.type === 'profit')?.target_value || 0).toLocaleString() }}</div>
                     <v-chip
                         v-if="userProfitThisMonth >= (userTargets.find(t => t.target?.type === 'profit')?.target_value || 0)"
                         color="success"
