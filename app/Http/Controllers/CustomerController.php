@@ -13,7 +13,7 @@ class CustomerController extends Controller
         $data = [];
 
         $data['customers'] = Customer::query()
-            ->with('user')
+            ->with(['user', 'prospect'])
             ->get();
 
         return Inertia::render('Customer/CustomersPage', $data);

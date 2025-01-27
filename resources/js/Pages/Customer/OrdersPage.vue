@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head, router} from "@inertiajs/vue3";
+import DatePicker from "@/Components/DatePicker.vue";
 
 const props = defineProps({
     orders: {
@@ -30,6 +31,14 @@ const ordersHeaders = [
                 <v-card-title class="bg-green-darken-1 d-flex justify-space-between align-center">
                     Orders Page
                 </v-card-title>
+
+                <v-card-text>
+                    <v-row class="mt-2">
+                        <v-col cols="12" sm="3">
+                            <DatePicker :label="'Date From'"/>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
             </v-card>
 
             <v-card>

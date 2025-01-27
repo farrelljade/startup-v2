@@ -98,12 +98,12 @@ function handlePermissionChange(permissionName) {
                                     />
                                 </v-col>
                                 <v-col cols="6">
-                                    <v-autocomplete
+                                    <v-select
                                         v-model="form.manager_id"
                                         variant="underlined"
                                         label="Manager"
                                         :items="filteredUsers"
-                                        @update:model-value="handleUpdate"
+                                        @update:modelValue="handleUpdate"
                                         :readonly="!userHasPermission(authUser, 'Edit User')"
                                     />
                                 </v-col>

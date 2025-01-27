@@ -159,9 +159,10 @@ const selected_tab = 'prospect_enquiry';
                                 <v-col md="6">
                                     <v-text-field
                                         v-model="form.phone"
+                                        variant="underlined"
                                         :type="showNumber ? 'text' : 'password'"
-                                        :append-icon="form.phone ? (showNumber ? 'mdi-eye' : 'mdi-eye-off') : ''"
-                                        @click:append="toggleNumber"
+                                        :append-inner-icon="form.phone ? (showNumber ? 'mdi-eye' : 'mdi-eye-off') : ''"
+                                        @click:append-inner="toggleNumber"
                                         label="Phone"
                                         @change="updateRecord(route('prospects.update', prospect.id), 'phone', form.phone)"
                                         :readonly="!userHasPermission(user, 'Update Prospect')"

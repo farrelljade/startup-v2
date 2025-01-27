@@ -115,7 +115,7 @@ const submitForm = () => {
                             item-value="id"
                             label="Select Product"
                             variant="underlined"
-                            @update:model-value="onProductSelect"
+                            @update:modelValue="onProductSelect"
                         />
                     </v-col>
                     <v-col md="4">

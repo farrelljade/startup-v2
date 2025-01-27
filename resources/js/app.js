@@ -46,7 +46,7 @@ createInertiaApp({
             .use(vuetify)
             .use(Toast, {
                 position: POSITION.BOTTOM_RIGHT,
-                timeout: 3000
+                timeout: 2000
             })
             .mount(el);
     },
