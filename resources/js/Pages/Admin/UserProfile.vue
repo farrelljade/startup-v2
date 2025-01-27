@@ -1,7 +1,7 @@
 <script setup>
-import {computed, reactive, ref} from 'vue';
+import {computed, ref} from 'vue';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Head, usePage} from '@inertiajs/vue3';
+import {Head, useForm, usePage} from '@inertiajs/vue3';
 import {updateUser, updateUserPermissions, userHasPermission} from "@/helpers/helpers.js";
 
 const props = defineProps({
@@ -12,17 +12,32 @@ const props = defineProps({
     availablePermissions: {
         type: Array,
         required: true
+    },
+    users: {
+        type: Object,
+        required: true
     }
 })
 
 const snackbar = ref(false);
 const snackbarMessage = ref('');
 
-const form = reactive({
-    email: props.user.email
+const form = useForm({
+    email: props.user.email,
+    manager_id: props.user.manager_id
 })
 
 const authUser = computed(() => usePage().props.auth.user);
+
+const filteredUsers = computed(() => {
+    return props.users
+        .filter(user => user.id !== props.user.id)
+        .map(user => ({
+            title: user.name,
+            value: user.id,
+            props: { disabled: user.id === props.user.manager_id }
+        }));
+});
 
 function handleUpdate() {
     updateUser(props.user.id, form, () => {
@@ -79,6 +94,16 @@ function handlePermissionChange(permissionName) {
                                         v-model="form.email"
                                         label="Email"
                                         @change="handleUpdate"
+                                        :readonly="!userHasPermission(authUser, 'Edit User')"
+                                    />
+                                </v-col>
+                                <v-col cols="6">
+                                    <v-autocomplete
+                                        v-model="form.manager_id"
+                                        variant="underlined"
+                                        label="Manager"
+                                        :items="filteredUsers"
+                                        @update:model-value="handleUpdate"
                                         :readonly="!userHasPermission(authUser, 'Edit User')"
                                     />
                                 </v-col>

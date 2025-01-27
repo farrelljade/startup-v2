@@ -14,7 +14,8 @@ class UserController extends Controller
         $data = [];
 
         $data['users'] = User::query()
-            ->select(['name', 'email'])
+            ->with('manager:id,name')
+            ->select(['id', 'name', 'email', 'manager_id', 'created_at'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -26,6 +27,11 @@ class UserController extends Controller
         $data = [];
 
         $data['user'] = $user;
+        $data['users'] = User::query()
+            ->with('manager:id,name')
+            ->select(['id', 'name', 'email', 'manager_id', 'created_at'])
+            ->orderBy('created_at', 'desc')
+            ->get();
         $data['availablePermissions'] = Permission::all();
 
         return Inertia::render('Admin/UserProfile', $data);
@@ -34,7 +40,8 @@ class UserController extends Controller
     public function update(Request $request, User $user): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate([
-            'email' => ['required', 'email']
+            'email' => ['required', 'email'],
+            'manager_id' => ['nullable', 'exists:users,id']
         ]);
 
         $user->update($validated);

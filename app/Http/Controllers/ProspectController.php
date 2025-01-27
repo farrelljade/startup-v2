@@ -20,7 +20,7 @@ class ProspectController extends Controller
 
         $data['prospects'] = Prospect::query()
             ->with(['user:id,name', 'leadSource:id,name'])
-            ->select(['company_name', 'user_id', 'lead_source_id'])
+            ->select(['id', 'company_name', 'user_id', 'lead_source_id', 'created_at', 'status'])
             ->where('status', '=', 'prospect')
             ->orderBy('created_at', 'desc')
             ->get();

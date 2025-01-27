@@ -39,7 +39,7 @@ const impersonateUser = () => {
         persistent
         width="60vh"
     >
-        <v-card>
+        <v-card class="pa-1">
             <v-toolbar
                 color="green-darken-1"
             >

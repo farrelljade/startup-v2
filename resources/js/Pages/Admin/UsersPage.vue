@@ -14,9 +14,10 @@ defineProps({
 })
 
 const usersHeaders = [
-    { title: 'Name', key: 'name', sortable: false},
-    { title: 'Email', key: 'email', sortable: false},
-    { title: 'Action', key: 'actions', sortable: false}
+    { title: 'Name', key: 'name', sortable: false },
+    { title: 'Email', key: 'email', sortable: false },
+    { title: 'Manager', key: 'manager.name', sortable: false },
+    { title: 'Action', key: 'actions', sortable: false }
 ]
 
 const closeDialog = () => {

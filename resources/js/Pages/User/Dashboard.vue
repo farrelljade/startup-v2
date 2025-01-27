@@ -5,7 +5,7 @@ import {computed, ref} from 'vue';
 import CustomerList from "@/Pages/Customer/Components/CustomerList.vue";
 import SheetInformation from "@/Pages/User/Components/SheetInformation.vue";
 
-const tab = ref('prospects');
+const tab = ref('customers');
 
 const props = defineProps({
     prospects: {
@@ -64,8 +64,8 @@ const user = computed(() => usePage().props.auth.user);
                             v-model="tab"
                             bg-color="success"
                         >
-                            <v-tab value="prospects">Prospects</v-tab>
                             <v-tab value="customers">Customers</v-tab>
+                            <v-tab value="prospects">Prospects</v-tab>
                         </v-tabs>
                         <v-card-title>
                             <v-tabs-window v-model="tab">
