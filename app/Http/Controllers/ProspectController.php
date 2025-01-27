@@ -19,7 +19,8 @@ class ProspectController extends Controller
         $data = [];
 
         $data['prospects'] = Prospect::query()
-            ->with(['user', 'leadSource'])
+            ->with(['user:id,name', 'leadSource:id,name'])
+            ->select(['company_name', 'user_id', 'lead_source_id'])
             ->where('status', '=', 'prospect')
             ->orderBy('created_at', 'desc')
             ->get();

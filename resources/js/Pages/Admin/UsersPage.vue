@@ -82,5 +82,13 @@ const handleSuccess = () => {
                 @success="handleSuccess"
             />
         </v-dialog>
+
+        <v-snackbar
+            v-model="snackbar"
+            :timeout="2000"
+            color="success"
+        >
+            {{ snackbarMessage }}
+        </v-snackbar>
     </AuthenticatedLayout>
 </template>

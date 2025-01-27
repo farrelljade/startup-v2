@@ -8,10 +8,10 @@ const emit = defineEmits(['success', 'close']);
 const showPassword = ref(false);
 
 const form = useForm({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: ''
+    name: null,
+    email: null,
+    password: null,
+    password_confirmation: null
 })
 
 const togglePassword = () => {
@@ -48,7 +48,9 @@ const submit = () => {
                             autocomplete
                             label="Name"
                             variant="underlined"
+                            append-inner-icon="mdi-rename"
                             :error-messages="form.errors.name"
+                            clearable
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -57,7 +59,9 @@ const submit = () => {
                             autocomplete="new-password"
                             label="Email"
                             variant="underlined"
+                            append-inner-icon="mdi-email"
                             :error-messages="form.errors.email"
+                            clearable
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -66,9 +70,11 @@ const submit = () => {
                             label="Password"
                             variant="underlined"
                             :type="showPassword ? 'text' : 'password'"
+                            append-icon="mdi-lock"
                             :append-inner-icon="form.password ? (showPassword ? 'mdi-eye' : 'mdi-eye-off') : ''"
                             @click:append-inner="togglePassword"
                             :error-messages="form.errors.password"
+                            clearable
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -77,9 +83,11 @@ const submit = () => {
                             label="Confirm Password"
                             variant="underlined"
                             :type="showPassword ? 'text' : 'password'"
+                            append-icon="mdi-lock"
                             :append-inner-icon="form.password ? (showPassword ? 'mdi-eye' : 'mdi-eye-off') : ''"
                             @click:append-inner="togglePassword"
                             :error-messages="form.errors.password_confirmation"
+                            clearable
                         />
                     </v-col>
                 </v-row>

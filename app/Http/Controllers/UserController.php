@@ -13,7 +13,10 @@ class UserController extends Controller
     {
         $data = [];
 
-        $data['users'] = User::all();
+        $data['users'] = User::query()
+            ->select(['name', 'email'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return Inertia::render('Admin/UsersPage', $data);
     }

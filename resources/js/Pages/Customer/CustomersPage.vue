@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head, router} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
 
-const search = ref('');
+const search = ref(null);
 
 const props = defineProps({
     customers: {
