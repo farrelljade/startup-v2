@@ -60,7 +60,7 @@ const tankLocation = computed(() => {
 })
 
 const submit = () => {
-    form.post(route('tank-sales.store'), {
+    form.post(route('tank-sales.store', props.prospect.id), {
         onSuccess: () => {
             form.reset();
             emit('close');

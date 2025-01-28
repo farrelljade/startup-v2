@@ -49,6 +49,15 @@ class DashboardController extends Controller
             ->with('user')
             ->where('status', 'customer')
             ->get();
+        $data['userOrders'] = Order::query()
+            ->whereHas('customer', function ($query) use ($data) {
+                $query->where('user_id', $data['user']->id);
+            })
+            ->with(['product', 'customer.user' => function ($query) {
+                $query->select('id', 'name');
+            }])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return Inertia::render('User/Dashboard', $data);
     }

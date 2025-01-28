@@ -7,6 +7,9 @@ import SheetInformation from "@/Pages/User/Components/SheetInformation.vue";
 
 const tab = ref('customers');
 
+const showOrderDialog = ref(false);
+const selectedOrder = ref(null);
+
 const props = defineProps({
     prospects: {
         type: Array,
@@ -27,6 +30,10 @@ const props = defineProps({
     userTargets: {
         type: Array,
         required: true
+    },
+    userOrders: {
+        type: Array,
+        required: true
     }
 });
 
@@ -36,7 +43,18 @@ const prospectHeaders = [
     {title: 'Actions', key: 'actions', sortable: false},
 ]
 
-const user = computed(() => usePage().props.auth.user);
+const recentOrderHeaders = [
+    {title: 'Company Name', key: 'customer.company_name', sortable: false},
+    {title: 'Total', key: 'total', sortable: false},
+    {title: 'Order Date', key: 'created_at', sortable: false},
+    {title: 'Actions', key: 'actions', sortable: false}
+]
+
+function showOrder(order) {
+    selectedOrder.value = order;
+    showOrderDialog.value = true;
+}
+
 </script>
 
 <template>
@@ -100,14 +118,152 @@ const user = computed(() => usePage().props.auth.user);
                 </v-col>
 
                 <v-col cols="12" md="6">
-                    <v-card>
-                        <v-card-title>Second Card</v-card-title>
+                    <v-card class="pa-1">
+                        <v-card-title class="bg-green-darken-1">
+                            Recent Orders
+                        </v-card-title>
                         <v-card-text>
-                            Content for second card
+                            <v-data-table
+                                :headers="recentOrderHeaders"
+                                :items="userOrders"
+                                :items-per-page="5"
+                            >
+                                <template v-slot:item.total="{ item }">
+                                    £{{ item.total.toLocaleString() }}
+                                </template>
+                                <template v-slot:item.created_at="{ item }">
+                                    {{ new Date(item.created_at).toLocaleDateString() }}
+                                </template>
+                                <template v-slot:item.actions="{ item }">
+                                    <v-tooltip text="View Order">
+                                        <template v-slot:activator="{ props }">
+                                            <v-btn
+                                                variant="text"
+                                                icon="mdi-eye"
+                                                color="warning"
+                                                :="props"
+                                                @click="showOrder(item)"
+                                            />
+                                        </template>
+                                    </v-tooltip>
+                                </template>
+                            </v-data-table>
                         </v-card-text>
                     </v-card>
                 </v-col>
             </v-row>
+
+            <v-dialog
+                v-model="showOrderDialog"
+                width="60vw"
+            >
+                <v-card v-if="selectedOrder">
+                    <v-card-title class="bg-green-darken-1">
+                        Order Details
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.order_number"
+                                    label="Order ID"
+                                    readonly
+                                    variant="underlined"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.product.name"
+                                    label="Product"
+                                    readonly
+                                    variant="underlined"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.quantity"
+                                    label="Quantity"
+                                    readonly
+                                    variant="underlined"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.ppl_sell"
+                                    label="PPL Sell"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.ppl_cost"
+                                    label="PPL Cost"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.nett_total"
+                                    label="Nett Total"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.vat"
+                                    label="VAT"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.total"
+                                    label="Total"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.ppl_profit"
+                                    label="PPL Profit"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.total_profit"
+                                    label="Total Profit"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer/>
+                        <v-btn
+                            variant="tonal"
+                            color="error"
+                            @click="showOrderDialog = false"
+                        >
+                            Close
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-container>
     </AuthenticatedLayout>
 </template>

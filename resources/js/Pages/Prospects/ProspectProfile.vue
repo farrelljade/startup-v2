@@ -199,13 +199,17 @@ const selected_tab = 'prospect_enquiry';
                                     £{{ item.total.toLocaleString() }}
                                 </template>
                                 <template v-slot:item.actions="{ item }">
-                                    <v-btn
-                                        variant="text"
-                                        color="warning"
-                                        icon="mdi-eye"
-                                        @click="showOrder(item)"
-                                    >
-                                    </v-btn>
+                                    <v-tooltip text="View Order">
+                                        <template v-slot:activator="{ props }">
+                                        <v-btn
+                                            variant="text"
+                                            color="warning"
+                                            icon="mdi-eye"
+                                            :="props"
+                                            @click="showOrder(item)"
+                                        />
+                                        </template>
+                                    </v-tooltip>
                                 </template>
                             </v-data-table>
                         </v-card-text>
@@ -228,24 +232,114 @@ const selected_tab = 'prospect_enquiry';
 
             <v-dialog
                 v-model="showOrderDialog"
-                max-width="1100"
+                width="60vw"
             >
                 <v-card v-if="selectedOrder">
                     <v-card-title class="bg-green-darken-1">
                         Order Details
                     </v-card-title>
-                    <v-data-table
-                        :headers="showOrderHeaders"
-                        :items="[selectedOrder]"
-                        class="elevation-3"
-                    >
-                        <template v-slot:item.order_number="{ item }">
-                            {{ item.order_number }}
-                        </template>
-
-                    </v-data-table>
+                    <v-card-text>
+                        <v-row>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.order_number"
+                                    label="Order ID"
+                                    readonly
+                                    variant="underlined"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.product.name"
+                                    label="Product"
+                                    readonly
+                                    variant="underlined"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.quantity"
+                                    label="Quantity"
+                                    readonly
+                                    variant="underlined"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.ppl_sell"
+                                    label="PPL Sell"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.ppl_cost"
+                                    label="PPL Cost"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.nett_total"
+                                    label="Nett Total"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.vat"
+                                    label="VAT"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.total"
+                                    label="Total"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.ppl_profit"
+                                    label="PPL Profit"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-text-field
+                                    v-model="selectedOrder.total_profit"
+                                    label="Total Profit"
+                                    readonly
+                                    variant="underlined"
+                                    prefix="£"
+                                />
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer/>
+                        <v-btn
+                            variant="tonal"
+                            color="error"
+                            @click="showOrderDialog = false"
+                        >
+                            Close
+                        </v-btn>
+                    </v-card-actions>
                 </v-card>
-
             </v-dialog>
 
             <v-snackbar
