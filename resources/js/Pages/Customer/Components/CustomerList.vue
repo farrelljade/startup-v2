@@ -11,7 +11,7 @@ const props = defineProps({
 const customerHeaders = [
     {title: 'Company Name', key: 'company_name', sortable: false},
     {title: 'Email', key: 'email', sortable: false},
-    {title: 'Actions', key: 'actions', sortable: false},
+    {title: '', key: 'actions', sortable: false},
 ]
 </script>
 
@@ -23,12 +23,17 @@ const customerHeaders = [
         class="elevation-3"
     >
         <template v-slot:item.actions="{ item }">
-            <v-btn
-                variant="text"
-                icon="mdi-location-enter"
-                color="warning"
-                @click="router.visit(route('company.profile', item.id ))"
-            />
+            <v-tooltip text="Go to customer page">
+                <template v-slot:activator="{ props }">
+                    <v-btn
+                        variant="text"
+                        icon="mdi-location-enter"
+                        color="warning"
+                        :="props"
+                        @click="router.visit(route('company.profile', item.id ))"
+                    />
+                </template>
+            </v-tooltip>
         </template>
     </v-data-table>
 </template>

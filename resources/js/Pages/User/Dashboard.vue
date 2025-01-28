@@ -40,14 +40,14 @@ const props = defineProps({
 const prospectHeaders = [
     {title: 'Company Name', key: 'company_name', sortable: false},
     {title: 'Email', key: 'email', sortable: false},
-    {title: 'Actions', key: 'actions', sortable: false},
+    {title: '', key: 'actions', sortable: false},
 ]
 
 const recentOrderHeaders = [
     {title: 'Company Name', key: 'customer.company_name', sortable: false},
     {title: 'Total', key: 'total', sortable: false},
     {title: 'Order Date', key: 'created_at', sortable: false},
-    {title: 'Actions', key: 'actions', sortable: false}
+    {title: '', key: 'actions', sortable: false}
 ]
 
 function showOrder(order) {
@@ -96,12 +96,17 @@ function showOrder(order) {
                                             class="elevation-3"
                                         >
                                             <template v-slot:item.actions="{ item }">
-                                                <v-btn
-                                                    variant="text"
-                                                    icon="mdi-location-enter"
-                                                    color="warning"
-                                                    @click="router.visit(route('company.profile', item.id ))"
-                                                />
+                                                <v-tooltip text="Go to prospect page">
+                                                    <template v-slot:activator="{ props }">
+                                                        <v-btn
+                                                            variant="text"
+                                                            icon="mdi-location-enter"
+                                                            color="warning"
+                                                            :="props"
+                                                            @click="router.visit(route('company.profile', item.id ))"
+                                                        />
+                                                    </template>
+                                                </v-tooltip>
                                             </template>
                                         </v-data-table>
                                     </v-card-text>
