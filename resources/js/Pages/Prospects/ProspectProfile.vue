@@ -234,7 +234,7 @@ const selected_tab = 'prospect_enquiry';
                 v-model="showOrderDialog"
                 width="60vw"
             >
-                <v-card v-if="selectedOrder">
+                <v-card v-if="selectedOrder" class="pa-1">
                     <v-card-title class="bg-green-darken-1">
                         Order Details
                     </v-card-title>

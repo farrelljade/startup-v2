@@ -93,7 +93,7 @@ const resetDate = () => {
             :max="maxDate"
             class="bg-third"
             color="green-lighten-1"
-            @update:modelValue="menuOpen = false; onInpurBlur()"
+            @update:modelValue="menuOpen = false; onInputBlur()"
         ></v-date-picker>
     </v-menu>
     <v-text-field

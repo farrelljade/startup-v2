@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/prospects/{prospect}/tank-sales/{tankSale}', [TankSaleController::class, 'update'])->name('tank-sales.update');
     Route::patch('/prospects/{prospect}', [ProspectEnquiryController::class, 'update'])->name('prospects.update');
     Route::patch('/users/{user}/permissions', [UserController::class, 'updatePermissions'])->name('users.permissions.update');
+    Route::post('/orders/search', [OrderController::class, 'search'])->name('orders.search');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::post('/prospects/{prospect}/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');

@@ -2,6 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head, router} from "@inertiajs/vue3";
 import DatePicker from "@/Components/DatePicker.vue";
+import {ref, watch} from "vue";
 
 const props = defineProps({
     orders: {
@@ -9,6 +10,9 @@ const props = defineProps({
         required: true
     }
 })
+
+const orderNumber = ref('');
+const filteredOrders = ref(props.orders);
 
 const ordersHeaders = [
     { title: 'Order Number', key: 'order_number' },
@@ -19,7 +23,27 @@ const ordersHeaders = [
     { title: 'Total', key: 'total' },
     { title: 'Created At', key: 'created_at' },
     { title: 'Actions', key: 'actions' }
-]
+];
+
+const searchOrders = () => {
+    router.post(route('orders.search'), {
+        order_number: orderNumber.value
+    }, {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: (page) => {
+            filteredOrders.value = page.props.filteredOrders;
+        }
+    });
+};
+
+watch(orderNumber, (newValue) => {
+    if (newValue.length >= 3) {
+        searchOrders();
+    } else if (newValue === '') {
+        filteredOrders.value = props.orders;
+    }
+});
 </script>
 
 <template>
@@ -35,6 +59,14 @@ const ordersHeaders = [
                 <v-card-text>
                     <v-row class="mt-2">
                         <v-col cols="12" sm="3">
+                            <v-text-field
+                                v-model="orderNumber"
+                                variant="underlined"
+                                label="Order Number"
+                                @keyup.enter="searchOrders"
+                            />
+                        </v-col>
+                        <v-col cols="12" sm="3">
                             <DatePicker :label="'Date From'"/>
                         </v-col>
                     </v-row>
@@ -45,7 +77,7 @@ const ordersHeaders = [
                 <v-card-text>
                     <v-data-table
                         :headers="ordersHeaders"
-                        :items="orders"
+                        :items="filteredOrders"
                     >
                         <template v-slot:item.total="{ item }">
                             £{{ item.total.toLocaleString() }}

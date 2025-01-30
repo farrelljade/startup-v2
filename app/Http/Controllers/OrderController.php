@@ -65,4 +65,17 @@ class OrderController extends Controller
 
         return back();
     }
+
+    public function search(Request $request)
+    {
+        $validated = $request->validate([
+            'order_number' => ['required', 'string', 'min:1']
+        ]);
+
+        $filteredOrders = Order::with(['customer.prospect', 'product'])
+            ->where('order_number', 'LIKE', "%{$validated['order_number']}%")
+            ->get();
+
+        return response()->json($filteredOrders);
+    }
 }
