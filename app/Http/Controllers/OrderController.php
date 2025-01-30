@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\Prospect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,9 @@ class OrderController extends Controller
         $data['orders'] = Order::query()
             ->with(['product', 'customer', 'customer.prospect'])
             ->orderBy('created_at', 'desc')
+            ->get();
+        $data['products'] = Product::query()
+            ->orderBy('name')
             ->get();
 
         return Inertia::render('Customer/OrdersPage', $data);
@@ -68,14 +72,27 @@ class OrderController extends Controller
 
     public function search(Request $request)
     {
-        $validated = $request->validate([
-            'order_number' => ['required', 'string', 'min:1']
-        ]);
+        $query = Order::query()
+            ->with(['customer.prospect', 'product']);
 
-        $filteredOrders = Order::with(['customer.prospect', 'product'])
-            ->where('order_number', 'LIKE', "%{$validated['order_number']}%")
-            ->get();
+        if ($request->has('order_number') && !empty($request->get('order_number'))) {
+            $query->where('order_number', 'LIKE', '%' . $request->get('order_number') . '%');
+        }
 
-        return response()->json($filteredOrders);
+        if ($request->has('product') && !empty($request->get('product'))) {
+            $query->where('product_id', '=', $request->get('product'));
+        }
+
+        if ($request->has('order_from') && !empty($request->get('order_from'))) {
+            $query->whereDate('created_at', '>=', $request->get('order_from'));
+        }
+
+        if ($request->has('order_to') && !empty($request->get('order_to'))) {
+            $query->whereDate('created_at', '<=', $request->get('order_to'));
+        }
+
+        $results = $query->orderBy('order_number', 'desc')->get();
+
+        return response()->json($results);
     }
 }

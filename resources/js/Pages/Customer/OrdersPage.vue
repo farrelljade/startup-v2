@@ -2,16 +2,25 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head, router} from "@inertiajs/vue3";
 import DatePicker from "@/Components/DatePicker.vue";
-import {ref, watch} from "vue";
+import {ref} from "vue";
+import {getData} from "@/helpers/helpers.js";
 
 const props = defineProps({
     orders: {
         type: Array,
         required: true
+    },
+    products: {
+        type: Array,
+        required: true
     }
 })
 
-const orderNumber = ref('');
+const orderNumber = ref(null);
+const product = ref(null);
+const orderFrom = ref(null);
+const orderTo = ref(null);
+
 const filteredOrders = ref(props.orders);
 
 const ordersHeaders = [
@@ -25,25 +34,26 @@ const ordersHeaders = [
     { title: 'Actions', key: 'actions' }
 ];
 
-const searchOrders = () => {
-    router.post(route('orders.search'), {
-        order_number: orderNumber.value
-    }, {
-        preserveState: true,
-        preserveScroll: true,
-        onSuccess: (page) => {
-            filteredOrders.value = page.props.filteredOrders;
-        }
-    });
-};
+const resetFilters = () => {
+    orderNumber.value = null;
+    product.value = null;
+    orderFrom.value = null;
+    orderTo.value = null;
+    searchOrders();
+}
+const searchOrders = async () => {
+    const params = {
+        order_number: orderNumber.value,
+        product: product.value,
+        order_from: orderFrom.value,
+        order_to: orderTo.value
+    };
 
-watch(orderNumber, (newValue) => {
-    if (newValue.length >= 3) {
-        searchOrders();
-    } else if (newValue === '') {
-        filteredOrders.value = props.orders;
-    }
-});
+    await getData(route('orders.search'), params, (response) => {
+        filteredOrders.value = response.data;
+    });
+}
+
 </script>
 
 <template>
@@ -63,12 +73,51 @@ watch(orderNumber, (newValue) => {
                                 v-model="orderNumber"
                                 variant="underlined"
                                 label="Order Number"
-                                @keyup.enter="searchOrders"
+                                @input="searchOrders"
                             />
                         </v-col>
                         <v-col cols="12" sm="3">
-                            <DatePicker :label="'Date From'"/>
+                            <v-autocomplete
+                                v-model="product"
+                                :items="products"
+                                item-value="id"
+                                item-title="name"
+                                variant="underlined"
+                                label="Product"
+                                @update:model-value="searchOrders"
+                            />
                         </v-col>
+                        <v-col cols="12" sm="3">
+                            <date-picker
+                                :label="'Date From'"
+                                :input-date="orderFrom"
+                                @date-updated="orderFrom = $event"
+                            />
+                        </v-col>
+                        <v-col cols="12" sm="3">
+                            <date-picker
+                                :label="'Date To'"
+                                :input-date="orderTo"
+                                @date-updated="orderTo = $event"
+                            />
+                        </v-col>
+                        <v-spacer/>
+                        <v-card-actions>
+                            <v-btn
+                                variant="tonal"
+                                class="mr-2"
+                                @click="resetFilters"
+                            >
+                                Reset Filters
+                            </v-btn>
+                            <v-btn
+                                variant="tonal"
+                                class="bg-success"
+                                @click="searchOrders"
+                            >
+                                Search
+                            </v-btn>
+                        </v-card-actions>
                     </v-row>
                 </v-card-text>
             </v-card>

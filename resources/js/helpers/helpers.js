@@ -1,6 +1,25 @@
 import { router } from '@inertiajs/vue3';
 import {useToast} from "vue-toastification";
 
+export async function getData(route, data, successFunction = null, errorFunction = null) {
+    return await axios.post(route, data)
+        .then((response) => {
+            if (typeof successFunction === 'function') {
+                successFunction(response);
+            } else {
+                sendToastNotification('success', 'Filters applied!');
+            }
+            return response;
+        })
+        .catch(err => {
+            if (typeof errorFunction === 'function') {
+                errorFunction(err);
+            } else {
+                sendToastNotification('error', findErrorInResponse(err));
+            }
+        })
+}
+
 export function sendToastNotification(type, message = '') {
     let toast = useToast();
 
