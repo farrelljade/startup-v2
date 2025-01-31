@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/user-targets', [UserTargetController::class, 'index'])->name('user-targets.index');
     Route::post('/user-targets', [UserTargetController::class, 'store'])->name('user-targets.store');
     Route::patch('/user-targets/{userTarget}', [UserTargetController::class, 'update'])->name('user-targets.update');
+    Route::post('/prospects/search', [ProspectController::class, 'search'])->name('prospects.search');
 });
 
 require __DIR__.'/auth.php';

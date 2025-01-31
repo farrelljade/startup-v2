@@ -37,7 +37,7 @@ class DashboardController extends Controller
         $data['userTargets'] = User::query()
             ->with(['targets' => function($query) {
                 $query->where('start_date', '<=', now())
-                    ->where('end_date', '>=', now())
+                    ->where('end_date', '>=', now()->month)
                     ->with('target');
             }])
             ->find($data['user']->id)

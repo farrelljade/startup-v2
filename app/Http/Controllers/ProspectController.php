@@ -71,4 +71,18 @@ class ProspectController extends Controller
             $address->save();
         });
     }
+
+    public function search(Request $request)
+    {
+        $query = Prospect::query()
+            ->with(['user', 'leadSource']);
+
+        if ($request->has('company_name') && !empty($request->get('company_name'))) {
+            $query->where('company_name', 'LIKE', '%' . $request->get('company_name') . '%');
+        }
+
+        $results = $query->orderBy('created_at', 'desc')->get();
+
+        return response()->json($results);
+    }
 }

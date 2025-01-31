@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, Link, router, usePage} from '@inertiajs/vue3';
-import {userHasPermission} from "@/helpers/helpers.js";
+import {getData, userHasPermission} from "@/helpers/helpers.js";
 import {computed, ref} from "vue";
 import AddNewProspectDialog from "@/Pages/Prospects/Components/AddNewProspectDialog.vue";
 
@@ -28,8 +28,12 @@ const props = defineProps({
     }
 })
 
+const companyName = ref(null);
+
+const filteredProspects = ref(props.prospects);
+
 const prospectsHeaders = [
-    { title: 'Name', key: 'company_name', sortable: false},
+    { title: 'Company Name', key: 'company_name', sortable: false},
     { title: 'Account Manager', key: 'user.name', sortable: false},
     { title: 'Lead Source', key: 'lead_source.name', sortable: false},
     { title: 'Action', key: 'actions', sortable: false}
@@ -45,6 +49,22 @@ const closeDialog = () => {
 const handleSuccess = () => {
     snackbarMessage.value = 'Prospect created successfully!'
     snackbar.value = true;
+}
+
+const resetFilers = () => {
+    companyName.value = null;
+    searchProspects();
+}
+const searchProspects = async () => {
+    const params = {
+        company_name: companyName.value,
+    };
+
+    console.log('Search Params:', params);
+
+    await getData(route('prospects.search'), params, (response) => {
+        filteredProspects.value = response.data;
+    })
 }
 
 </script>
@@ -66,13 +86,43 @@ const handleSuccess = () => {
                     >Add Prospect
                     </v-btn>
                 </v-card-title>
+
+                <v-card-text>
+                    <v-row class="mt-2">
+                        <v-col cols="12" sm="3">
+                            <v-text-field
+                                v-model="companyName"
+                                variant="underlined"
+                                label="Company Name"
+                                @click="searchProspects"
+                            />
+                        </v-col>
+                        <v-spacer/>
+                        <v-card-actions>
+                            <v-btn
+                                variant="tonal"
+                                class="mr-2"
+                                @click="resetFilers"
+                            >
+                                Reset Filters
+                            </v-btn>
+                            <v-btn
+                                variant="tonal"
+                                class="bg-success"
+                                @click="searchProspects"
+                            >
+                                Search
+                            </v-btn>
+                        </v-card-actions>
+                    </v-row>
+                </v-card-text>
             </v-card>
 
             <v-card>
                 <v-card-text>
                     <v-data-table
                         :headers="prospectsHeaders"
-                        :items="prospects"
+                        :items="filteredProspects"
                     >
                         <template v-slot:item.user.name="{ item }">
                             <template v-if="userHasPermission(auth, 'View User Dashboard')">
