@@ -29,6 +29,9 @@ const props = defineProps({
 })
 
 const companyName = ref(null);
+const userId = ref(null);
+const leadSourceId = ref(null);
+
 
 const filteredProspects = ref(props.prospects);
 
@@ -53,14 +56,17 @@ const handleSuccess = () => {
 
 const resetFilers = () => {
     companyName.value = null;
+    userId.value = null;
+    leadSourceId.value = null;
     searchProspects();
 }
 const searchProspects = async () => {
     const params = {
         company_name: companyName.value,
+        user_id: userId.value,
+        lead_source_id: leadSourceId.value
     };
 
-    console.log('Search Params:', params);
 
     await getData(route('prospects.search'), params, (response) => {
         filteredProspects.value = response.data;
@@ -94,26 +100,33 @@ const searchProspects = async () => {
                                 v-model="companyName"
                                 variant="underlined"
                                 label="Company Name"
-                                @click="searchProspects"
+                                @input="searchProspects"
                             />
                         </v-col>
-                        <v-spacer/>
-                        <v-card-actions>
-                            <v-btn
-                                variant="tonal"
-                                class="mr-2"
-                                @click="resetFilers"
-                            >
-                                Reset Filters
-                            </v-btn>
-                            <v-btn
-                                variant="tonal"
-                                class="bg-success"
-                                @click="searchProspects"
-                            >
-                                Search
-                            </v-btn>
-                        </v-card-actions>
+                        <v-col cols="12" sm="3">
+                            <v-autocomplete
+                                v-model="userId"
+                                :items="users"
+                                variant="underlined"
+                                label="Account Manager"
+                                item-value="id"
+                                item-title="name"
+                                clearable
+                                @update:model-value="searchProspects"
+                            />
+                        </v-col>
+                        <v-col cols="12" sm="3">
+                            <v-autocomplete
+                                v-model="leadSourceId"
+                                :items="leadSource"
+                                variant="underlined"
+                                label="Lead Source"
+                                item-value="id"
+                                item-title="name"
+                                clearable
+                                @update:model-value="searchProspects"
+                            />
+                        </v-col>
                     </v-row>
                 </v-card-text>
             </v-card>

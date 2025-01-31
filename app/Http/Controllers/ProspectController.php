@@ -81,6 +81,14 @@ class ProspectController extends Controller
             $query->where('company_name', 'LIKE', '%' . $request->get('company_name') . '%');
         }
 
+        if ($request->has('user_id') && !empty($request->get('user_id'))) {
+            $query->where('user_id', '=', $request->get('user_id'));
+        }
+
+        if ($request->has('lead_source_id') && !empty($request->get('lead_source_id'))) {
+            $query->where('lead_source_id', '=', $request->get('lead_source_id'));
+        }
+
         $results = $query->orderBy('created_at', 'desc')->get();
 
         return response()->json($results);
