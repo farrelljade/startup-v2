@@ -1,12 +1,28 @@
 <script setup>
 import {usePage, Link, router} from '@inertiajs/vue3';
-import {computed, defineAsyncComponent, ref} from 'vue';
+import {computed, defineAsyncComponent, onMounted, ref, watch} from 'vue';
 import {createCookie, readCookie, userHasPermission} from "@/helpers/helpers.js";
 
 const drawer = ref(true);
 const rail = ref(false);
 const impersonateUserDialog = ref(false);
 const user = computed(() => usePage().props.auth.user)
+
+const saveRailState = (newState) => {
+    createCookie('sidebar_rail', newState ? '1' : '0', 365);
+}
+
+watch(rail, (newValue) => {
+    saveRailState(newValue);
+});
+
+onMounted(() => {
+    const savedRail = readCookie('sidebar_rail');
+
+    if (savedRail !== null) {
+        rail.value = savedRail === '1';
+    }
+});
 
 const openImpersonateDialog = () => {
     impersonateUserDialog.value = true;
@@ -32,10 +48,15 @@ const logout = () => {
             <v-navigation-drawer
                 v-model="drawer"
                 :rail="rail"
-                @click="rail = false"
+                permanent
             >
                 <v-list>
-                    <v-list-item v-if="!rail" prepend-icon="mdi-menu-open" @click.stop="rail = !rail" :title="user.name"></v-list-item>
+                    <v-list-item
+                        v-if="!rail"
+                        prepend-icon="mdi-menu-open"
+                        @click.stop="rail = true"
+                        :title="user.name"
+                    ></v-list-item>
                 </v-list>
 
                 <v-list density="compact" nav>
