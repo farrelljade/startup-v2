@@ -2,29 +2,26 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head, router} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
-
-const search = ref(null);
+import {getData} from "@/helpers/helpers.js";
 
 const props = defineProps({
     customers: {
         type: Array,
         required: true
+    },
+    users: {
+        type: Array,
+        required: true
     }
 })
 
+const companyName = ref(null);
+const userId = ref(null);
+
+const filteredCustomers = ref(props.customers);
+
 const customerItems = computed(() => {
     return props.customers.map(customer => customer.company_name);
-});
-
-const filteredCustomers = computed(() => {
-    if (!search.value) return props.customers;
-
-    const searchTerm = search.value.toLowerCase();
-    return props.customers.filter(customer =>
-        customer.company_name.toLowerCase().includes(searchTerm) ||
-        customer.email.toLowerCase().includes(searchTerm) ||
-        customer.phone.toLowerCase().includes(searchTerm)
-    );
 });
 
 const customersHeaders = [
@@ -35,6 +32,17 @@ const customersHeaders = [
     {title: 'Created At', key: 'created_at', sortable: false},
     {title: 'Actions', key: 'actions', sortable: false},
 ]
+
+const searchCustomers = async () => {
+    const params = {
+        company_name: companyName.value,
+        user_id: userId.value
+    };
+
+    await getData(route('customers.search'), params, (response) => {
+        filteredCustomers.value = response.data;
+    });
+}
 </script>
 
 <template>
@@ -51,12 +59,24 @@ const customersHeaders = [
                     <v-row class="mt-2">
                         <v-col cols="12" md="3">
                             <v-autocomplete
-                                v-model="search"
+                                v-model="companyName"
                                 :items="customerItems"
                                 variant="underlined"
                                 label="Search Company"
+                                @update:model-value="searchCustomers"
                                 clearable
-
+                            />
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-autocomplete
+                                v-model="userId"
+                                :items="users"
+                                item-value="id"
+                                item-title="name"
+                                variant="underlined"
+                                label="Users"
+                                @update:model-value="searchCustomers"
+                                clearable
                             />
                         </v-col>
                     </v-row>

@@ -1,7 +1,8 @@
 <script setup>
-import {usePage, Link, router} from '@inertiajs/vue3';
+import {usePage, router} from '@inertiajs/vue3';
 import {computed, defineAsyncComponent, onMounted, ref, watch} from 'vue';
 import {createCookie, readCookie, userHasPermission} from "@/helpers/helpers.js";
+import SidebarItem from "@/Layouts/SidebarItem.vue";
 
 const drawer = ref(true);
 const rail = ref(false);
@@ -61,10 +62,10 @@ const logout = () => {
 
                 <v-list density="compact" nav>
                     <v-list-item v-if="rail" prepend-icon="mdi-menu-close" @click.stop="rail = false"></v-list-item>
-                    <v-list-item :href="route('dashboard')" prepend-icon="mdi-home" title="Home" value="home"></v-list-item>
-                    <v-list-item :href="route('orders.index')" prepend-icon="mdi-cart" title="Orders Page" value="orders"></v-list-item>
-                    <v-list-item :href="route('prospects.index')" prepend-icon="mdi-face-agent" title="Prospects Page" value="prospects"></v-list-item>
-                    <v-list-item :href="route('customers.index')" prepend-icon="mdi-account-group" title="Customers Page" value="customers"></v-list-item>
+                    <sidebar-item :rail="rail" :href="route('dashboard')" icon="mdi-home" title="Home" value="home"></sidebar-item>
+                    <sidebar-item :rail="rail" :href="route('orders.index')" icon="mdi-cart" title="Orders Page" value="orders"></sidebar-item>
+                    <sidebar-item :rail="rail" :href="route('prospects.index')" icon="mdi-face-agent" title="Prospects Page" value="prospects"></sidebar-item>
+                    <sidebar-item :rail="rail" :href="route('customers.index')" icon="mdi-account-group" title="Customers Page" value="customers"></sidebar-item>
 
                     <v-list-group
                         v-if="user && userHasPermission(user, 'View Admin')"

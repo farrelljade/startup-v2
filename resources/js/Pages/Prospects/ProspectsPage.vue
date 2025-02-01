@@ -54,12 +54,6 @@ const handleSuccess = () => {
     snackbar.value = true;
 }
 
-const resetFilers = () => {
-    companyName.value = null;
-    userId.value = null;
-    leadSourceId.value = null;
-    searchProspects();
-}
 const searchProspects = async () => {
     const params = {
         company_name: companyName.value,
