@@ -29,6 +29,7 @@ function goToTab(routeName) {
     <v-tabs
         :model-value="selected_tab"
         bg-color="transparent"
+        slider-color="green"
     >
         <v-tab value="prospect_enquiry" @click="goToTab('company.profile')">Profile</v-tab>
         <v-tab value="prospect_notes" @click="goToTab('prospect.notes')">Notes</v-tab>

@@ -27,12 +27,14 @@ class ProspectNotesController extends Controller
     {
         $request->validate([
             'note' => ['required', 'string'],
+            'next_contact_date' => ['required', 'date']
         ]);
 
         Note::create([
             'prospect_id' => $request->prospect_id,
             'user_id' => auth()->id(),
             'note' => $request->note,
+            'next_contact_date' => $request->next_contact_date
         ]);
 
         return redirect()->route('prospect.notes', ['prospect' => $request->prospect_id]);

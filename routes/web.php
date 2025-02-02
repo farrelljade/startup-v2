@@ -8,6 +8,7 @@ use App\Http\Controllers\ProspectController;
 use App\Http\Controllers\ProspectEnquiryController;
 use App\Http\Controllers\ProspectNotesController;
 use App\Http\Controllers\TankSaleController;
+use App\Http\Controllers\UserCalendarController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserTargetController;
 use Illuminate\Foundation\Application;
@@ -50,6 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/user-targets/{userTarget}', [UserTargetController::class, 'update'])->name('user-targets.update');
     Route::post('/prospects/search', [ProspectController::class, 'search'])->name('prospects.search');
     Route::post('/customers/search', [CustomerController::class, 'search'])->name('customers.search');
+    Route::get('/user-calendar', [UserCalendarController::class, 'index'])->name('user-calendar.index');
 });
 
 require __DIR__.'/auth.php';

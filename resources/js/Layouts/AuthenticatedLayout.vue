@@ -63,6 +63,7 @@ const logout = () => {
                 <v-list density="compact" nav>
                     <v-list-item v-if="rail" prepend-icon="mdi-menu-close" @click.stop="rail = false"></v-list-item>
                     <sidebar-item :rail="rail" :href="route('dashboard')" icon="mdi-home" title="Home" value="home"></sidebar-item>
+                    <sidebar-item :rail="rail" :href="route('user-calendar.index')" icon="mdi-calendar" title="Calendar" value="calendar"></sidebar-item>
                     <sidebar-item :rail="rail" :href="route('orders.index')" icon="mdi-cart" title="Orders Page" value="orders"></sidebar-item>
                     <sidebar-item :rail="rail" :href="route('prospects.index')" icon="mdi-face-agent" title="Prospects Page" value="prospects"></sidebar-item>
                     <sidebar-item :rail="rail" :href="route('customers.index')" icon="mdi-account-group" title="Customers Page" value="customers"></sidebar-item>
