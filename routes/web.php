@@ -52,6 +52,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/prospects/search', [ProspectController::class, 'search'])->name('prospects.search');
     Route::post('/customers/search', [CustomerController::class, 'search'])->name('customers.search');
     Route::get('/user-calendar', [UserCalendarController::class, 'index'])->name('user-calendar.index');
+    Route::post('/user-calendar.search', [UserCalendarController::class, 'search'])->name('user-calendar.search');
+    Route::patch('/user-calendar/{note}', [UserCalendarController::class, 'update'])->name('user-calendar.update');
 });
 
 require __DIR__.'/auth.php';

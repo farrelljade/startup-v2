@@ -10,7 +10,8 @@ class Note extends Model
         'prospect_id',
         'user_id',
         'note',
-        'next_contact_date'
+        'next_contact_date',
+        'note_complete'
     ];
 
     public function prospect()
