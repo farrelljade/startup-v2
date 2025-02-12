@@ -21,5 +21,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TargetSeeder::class
         ]);
+
+        $this->call([
+            SicCodesTableSeeder::class,
+        ]);
     }
 }

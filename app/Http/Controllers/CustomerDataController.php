@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SicCode;
 use App\Services\CompaniesHouseService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class CustomerDataController extends Controller
 {
@@ -18,42 +21,71 @@ class CustomerDataController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
         return Inertia::render('Admin/CustomerDataPage');
     }
 
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         $query = $request->input('q');
         try {
-            $companies = $this->companiesHouseService->searchCompaniesByName($query);
-            return response()->json($companies, 200);
+            $searchResults = $this->companiesHouseService->searchCompaniesByName($query);
+
+            $companies = array_map(function($company) {
+                try {
+                    $details = $this->companiesHouseService->getCompanyDetails($company['company_number']);
+
+                    $sicCodes = $details['sic_codes'] ?? [];
+                    $sicDescriptions = SicCode::whereIn('code', $sicCodes)
+                        ->pluck('description', 'code')
+                        ->toArray();
+
+                    $formattedSicCodes = array_map(function($code) use ($sicDescriptions) {
+                        return [
+                            'code' => $code,
+                            'description' => $sicDescriptions[$code] ?? 'Description not available'
+                        ];
+                    }, $sicCodes);
+
+                    return array_merge($company, [
+                        'sic_codes' => $formattedSicCodes
+                    ]);
+                } catch (\Exception $e) {
+                    return array_merge($company, [
+                        'sic_codes' => []
+                    ]);
+                }
+            }, $searchResults['items']);
+
+            return response()->json(['items' => $companies], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
-    public function advancedSearch(Request $request)
-    {
-        try {
-            $params = $request->validate([
-                'sic_codes' => 'nullable|array',
-                'company_name_includes' => 'nullable|string',
-                'company_status' => 'nullable|string',
-                'size' => 'nullable|integer|min:1|max:5000',
-                'start_index' => 'nullable|integer|min:0',
-            ]);
+//    public function search(Request $request): JsonResponse
+//    {
+//        $query = $request->input('q');
+//        try {
+//            $companies = $this->companiesHouseService->searchCompaniesByName($query);
+//            return response()->json($companies, 200);
+//        } catch (\Exception $e) {
+//            return response()->json(['error' => $e->getMessage()], 500);
+//        }
+//    }
 
-            $results = $this->companiesHouseService->advancedSearch($params);
-
-            return response()->json($results);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Failed to fetch company data: ' . $e->getMessage()
-            ], 500);
-        }
-    }
+//    public function getCompany($companyNumber): JsonResponse
+//    {
+//        try {
+//            $details = $this->companiesHouseService->getCompanyDetails($companyNumber);
+//            return response()->json($details);
+//        } catch (\Exception $e) {
+//            return response()->json([
+//                'error' => 'Failed to fetch company details'
+//            ], 500);
+//        }
+//    }
 
     /**
      * Show the form for creating a new resource.

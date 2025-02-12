@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\SicCode;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CompaniesHouseService
 {
@@ -17,6 +19,10 @@ class CompaniesHouseService
         $this->baseUrl = config('services.companies_house.base_url');
     }
 
+    /**
+     * @throws RequestException
+     * @throws ConnectionException
+     */
     public function searchCompaniesByName($query)
     {
         $url = "{$this->baseUrl}/search/companies";
@@ -34,44 +40,57 @@ class CompaniesHouseService
         $response->throw();
     }
 
-    public function advancedSearch(array $params)
+    /**
+     * @throws RequestException
+     * @throws ConnectionException
+     */
+    public function getCompanyDetails($companyNumber)
     {
-        $url = "{$this->baseUrl}/advanced-search/companies";
+        try {
+            $url = "{$this->baseUrl}/company/{$companyNumber}";
 
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->apiKey . ':')
-        ])->get($url, $params);
+            $response = Http::withHeaders([
+                'Authorization' => 'Basic ' . base64_encode($this->apiKey . ':')
+            ])->get($url);
 
-        if ($response->successful()) {
-            return $response->json();
+            if ($response->successful()) {
+                $companyData = $response->json();
+
+                if (!empty($companyData['sic_codes'])) {
+                    $descriptions = SicCode::whereIn('code', $companyData['sic_codes'])
+                        ->pluck('description', 'code')
+                        ->toArray();
+
+                    $companyData['sic_descriptions'] = array_map(function($code) use ($descriptions) {
+                        return $descriptions[$code] ?? 'Description not available';
+                    }, $companyData['sic_codes']);
+                }
+
+                return $companyData;
+            }
+
+            $response->throw();
+        } catch (\Exception $e) {
+            Log::error('Company details error', [
+                'message' => $e->getMessage(),
+                'company_number' => $companyNumber
+            ]);
+            throw $e;
         }
-
-        $response->throw();
     }
 
-    // Helper method to get companies by SIC codes
-    public function searchBySicCodes(array $sicCodes, array $additionalParams = [])
-    {
-        $params = array_merge([
-            'sic_codes' => implode(',', $sicCodes),
-            'size' => 20  // default page size
-        ], $additionalParams);
-
-        return $this->advancedSearch($params);
-    }
-
-    public function getCompanyProfile($companyNumber)
-    {
-        $url = "{$this->baseUrl}/company/{$companyNumber}";
-
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->apiKey . ':')
-        ])->get($url);
-
-        if ($response->successful()) {
-            return $response->json();
-        }
-
-        $response->throw();
-    }
+//    public function getCompanyDetails($companyNumber)
+//    {
+//        $url = "{$this->baseUrl}/company/{$companyNumber}";
+//
+//        $response = Http::withHeaders([
+//            'Authorization' => 'Basic ' . base64_encode($this->apiKey . ':')
+//        ])->get($url);
+//
+//        if ($response->successful()) {
+//            return $response->json();
+//        }
+//
+//        $response->throw();
+//    }
 }

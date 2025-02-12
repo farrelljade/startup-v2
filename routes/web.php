@@ -55,8 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/user-calendar', [UserCalendarController::class, 'index'])->name('user-calendar.index');
     Route::post('/user-calendar.search', [UserCalendarController::class, 'search'])->name('user-calendar.search');
     Route::patch('/user-calendar/{note}', [UserCalendarController::class, 'update'])->name('user-calendar.update');
-    Route::get('/advanced-search/companies', [CustomerDataController::class, 'advancedSearch'])
-        ->name('companies.advanced-search');
+    Route::get('/company/{company_number}', [CustomerDataController::class, 'getCompany'])
+        ->name('companies.show');
     Route::get('/customer-data/search', [CustomerDataController::class, 'search']);
     Route::resource('customer-data', CustomerDataController::class);
 });
